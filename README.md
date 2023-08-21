@@ -1,2 +1,0 @@
-# Gregory
-developpement mobile
