@@ -1,0 +1,28 @@
+question 1:
+
+CREATE TABLE produits (
+	id SERIAL PRIMARY KEY,
+	nom VARCHAR(256),
+	prix FLOAT(10)
+)
+
+CREATE TABLE disque_dur(
+	ssd BOOLEAN,
+	vitesse INT
+) INHERITS (produits);
+
+CREATE TABLE carte_graphique(
+	memoire INT
+) INHERITS (produits);
+
+INSERT INTO produits (nom, prix) VALUES ('PS4', 321);
+INSERT INTO produits (nom, prix) VALUES ('DELL XP 15', 1269);
+INSERT INTO produits (nom, prix) VALUES ('Z-FLIP 5', 1529);
+
+INSERT INTO disque_dur (nom, prix,ssd, vitesse) VALUES('SANDISK', 899,TRUE,32);
+INSERT INTO disque_dur (nom, prix,ssd, vitesse) VALUES('SEAGATE', 129,TRUE,12);
+INSERT INTO disque_dur (nom, prix,ssd, vitesse) VALUES('TOSHIBA', 1899,TRUE,49);
+
+INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 1600', 1299,321);
+INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 1080', 1699,322);
+INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 4060 TI', 2899,432);
