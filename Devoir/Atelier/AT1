@@ -1,1 +1,90 @@
+NUMERO 1:
+
+CREATE TABLE Étudiants (
+    id SERIAL PRIMARY KEY,
+    prénom VARCHAR(256),
+    nom VARCHAR(256),
+    da CHAR(7) UNIQUE,
+    inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    datenaissance DATE CHECK (datenaissance <= current_date - interval '16 years')
+);
+
+
+CREATE TABLE Cours (
+id  SERIAL PRIMARY KEY,
+	code CHAR(10),
+	titre VARCHAR(256),
+	description TEXT
+);
+
+CREATE TABLE Session (
+id  SERIAL PRIMARY KEY,
+	saison VARCHAR(10) CHECK (saison IN ('hiver', 'ete', 'automne')),
+	annee INT CHECK (annee BETWEEN '1998' AND EXTRACT(YEAR FROM CURRENT_DATE)+1) 
+);
+
+CREATE TABLE inscription (
+etudiants_id INT NOT NULL,
+	cours_id INT NOT NULL,
+	session_id INT NOT NULL,
+	PRIMARY KEY (etudiants_id,cours_id,session_id),
+	FOREIGN KEY (etudiants_id ) REFERENCES etudiants (id),
+	FOREIGN KEY (cours_id ) REFERENCES cours (id),
+	FOREIGN KEY (session_id ) REFERENCES session (id),
+	note INT CHECK (note BETWEEN 0 and 100),
+	reussite BOOLEAN CHECK ((reussite AND note >= 60) OR (not reussite AND note <60)) 
+)
+
+
+NUMERO 2:
+INSERT INTO Etudiants (prenom, nom, DA, datenaissance)
+VALUES ('John', 'Doe', '1234567', '2005-08-29'); -- Respecte la contrainte
+
+INSERT INTO Etudiants (prenom, nom, DA, datenaissance)
+VALUES ('Jane', 'Smith', '7654321', '2003-10-15'); -- Enfreint la contrainte (moins de 16 ans)
+
+INSERT INTO Etudiants (prenom, nom, DA, datenaissance)
+VALUES ('Jane', 'Smith', '7654321121', '2005-10-15'); -- Enfreint la contrainte  (DA trop long)
+
+INSERT INTO Etudiants (prenom, nom, DA, datenaissance)
+VALUES ('Jane', 'Smiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiith', '7654321', '2005-10-15'); -- Enfreint la contrainte () 
+
+INSERT INTO Etudiants (prenom, nom, DA, datenaissance)
+VALUES ('Jaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaane', 'Smith', '7654321121', '2005-10-15'); -- Enfreint la contrainte  (DA trop long)
+
+INSERT INTO Session (saison, annee)
+VALUES ('hiver', 2023); -- Respecte la contrainte
+
+INSERT INTO Session (saison, annee)
+VALUES ('printemps', 2023); -- Enfreint la contrainte (saison invalide)
+
+INSERT INTO Session (saison, annee)
+VALUES ('ete', charlie); -- Enfreint la contrainte (annee n'est pas un string)
+
+INSERT INTO Session (saison, annee)
+VALUES ('ete', 2022); -- Enfreint la contrainte (année invalide)
+
+INSERT INTO Session (saison, annee)
+VALUES ('automne', 2024); -- Respecte la contrainte
+
+INSERT INTO inscription (etudiants_id, cours_id, session_id, note, reussite)
+VALUES (1, 1, 1, 85, TRUE); -- Respecte la contrainte
+
+INSERT INTO inscription (etudiants_id, cours_id, session_id, note, reussite)
+VALUES (lol, 1, 1, 85, TRUE); -- Respecte pas la contrainte (id invalide)
+
+INSERT INTO inscription (etudiants_id, cours_id, session_id, note, reussite)
+VALUES (1, lal, 1, 85, TRUE); -- Respecte pas la contrainte (id invalide) 
+
+INSERT INTO inscription (etudiants_id, cours_id, session_id, note, reussite)
+VALUES (1, 1, 1, 200, TRUE); -- Respecte pas la contrainte (note trop haute) 
+
+INSERT INTO inscription (etudiants_id, cours_id, session_id, note, reussite)
+VALUES (2, 2, 2, 55, FALSE); -- Enfreint la contrainte (note insuffisante)
+
+INSERT INTO inscription (etudiants_id, cours_id, session_id, note, reussite)
+VALUES (1, 1, 1, 75, TRUE); -- Respecte la contrainte
+
+INSERT INTO inscription (etudiants_id, cours_id, session_id, note, reussite)
+VALUES (2, 2, 2, 45, TRUE); -- Enfreint la contrainte (note suffisante mais échec)
 
