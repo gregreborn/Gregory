@@ -26,3 +26,20 @@ INSERT INTO disque_dur (nom, prix,ssd, vitesse) VALUES('TOSHIBA', 1899,TRUE,49);
 INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 1600', 1299,321);
 INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 1080', 1699,322);
 INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 4060 TI', 2899,432);
+
+SELECT
+    p.id,
+    p.nom AS nom_produit,
+    p.prix,
+    CASE
+        WHEN d.id IS NOT NULL THEN 'Disque Dur'
+        WHEN c.id IS NOT NULL THEN 'Carte Graphique'
+        ELSE 'Produit'
+    END AS categorie,
+    d.ssd AS ssd_disque_dur,
+    d.vitesse AS vitesse_disque_dur,
+    c.memoire AS memoire_carte_graphique
+FROM produits p
+LEFT JOIN disque_dur d ON p.id = d.id
+LEFT JOIN carte_graphique c ON p.id = c.id;
+
