@@ -1,4 +1,5 @@
-question 1:
+-----------------------------------------------------------------------------------------------question 1-----------------------------------------------------------------------------------------------------------
+
 
 CREATE TABLE produits (
 	id SERIAL PRIMARY KEY,
@@ -31,7 +32,7 @@ SELECT produits.id, produits.nom, produits.prix, disque_dur.ssd,disque_dur.vites
 LEFT JOIN disque_dur ON produits.id = disque_dur.id
 LEFT JOIN carte_graphique ON produits.id = disque_dur.id;
 
-question 2:
+-----------------------------------------------------------------------------------------------question 2-----------------------------------------------------------------------------------------------------------
 
 CREATE TABLE utilisateurs (
     id SERIAL,
@@ -66,8 +67,32 @@ INSERT INTO utilisateurs (nom_utilisateur,mot_de_passe,date_de_creation,etat) VA
 UPDATE utilisateurs
 SET etat ='BANNIS' WHERE  nom_utilisateur = 'Thirtsa' AND etat ='ACTIF'; 
 
-question 3:
+-----------------------------------------------------------------------------------------------question 3-----------------------------------------------------------------------------------------------------------
+
 
 SELECT AVG(produits.prix) FROM produits;
+
+SELECT
+    category,
+    AVG(prix) AS average_price
+FROM (
+    SELECT
+        nom,
+        prix,
+        'hard_disk' AS category
+    FROM produits
+    WHERE EXISTS (SELECT 1 FROM disque_dur WHERE produits.id = disque_dur.id)
+    
+    UNION ALL
+    
+    SELECT
+        nom,
+        prix,
+        'graphics_card' AS category
+    FROM produits
+    WHERE EXISTS (SELECT 1 FROM carte_graphique WHERE produits.id = carte_graphique.id)
+) AS subquery
+GROUP BY category;
+
 
 	
