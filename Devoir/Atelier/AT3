@@ -27,19 +27,47 @@ INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 1600', 1299,321);
 INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 1080', 1699,322);
 INSERT INTO carte_graphique (nom, prix,memoire) VALUES('NVIDIA 4060 TI', 2899,432);
 
-SELECT
-    p.id,
-    p.nom AS nom_produit,
-    p.prix,
-    CASE
-        WHEN d.id IS NOT NULL THEN 'Disque Dur'
-        WHEN c.id IS NOT NULL THEN 'Carte Graphique'
-        ELSE 'Produit'
-    END AS categorie,
-    d.ssd AS ssd_disque_dur,
-    d.vitesse AS vitesse_disque_dur,
-    c.memoire AS memoire_carte_graphique
-FROM produits p
-LEFT JOIN disque_dur d ON p.id = d.id
-LEFT JOIN carte_graphique c ON p.id = c.id;
+SELECT produits.id, produits.nom, produits.prix, disque_dur.ssd,disque_dur.vitesse,carte_graphique.memoire FROM produits
+LEFT JOIN disque_dur ON produits.id = disque_dur.id
+LEFT JOIN carte_graphique ON produits.id = disque_dur.id;
 
+question 2:
+
+CREATE TABLE utilisateurs (
+    id SERIAL,
+    nom_utilisateur VARCHAR(255),
+    mot_de_passe VARCHAR(255),
+    date_de_creation DATE,
+    etat VARCHAR(255),
+    PRIMARY KEY (id, etat)
+) PARTITION BY LIST (etat);
+
+CREATE TABLE utilisateurs_ACONFIRME PARTITION OF utilisateurs
+    FOR VALUES IN ('A_CONFIRME');
+
+CREATE TABLE utilisateurs_ACTIF PARTITION OF utilisateurs
+    FOR VALUES IN ('ACTIF');
+
+CREATE TABLE utilisateurs_BANNIS PARTITION OF utilisateurs
+    FOR VALUES IN ('BANNIS');
+
+INSERT INTO utilisateurs (nom_utilisateur,mot_de_passe,date_de_creation,etat) VALUES ('Gregory', 'Greg1515$','2023-09-08','A_CONFIRME')
+
+INSERT INTO utilisateurs (nom_utilisateur,mot_de_passe,date_de_creation,etat) VALUES ('Sarah', 'Sarah2121$','2023-09-08','A_CONFIRME')
+
+INSERT INTO utilisateurs (nom_utilisateur,mot_de_passe,date_de_creation,etat) VALUES ('Corinne', 'Corinne2121$','2023-09-08','BANNIS')
+
+INSERT INTO utilisateurs (nom_utilisateur,mot_de_passe,date_de_creation,etat) VALUES ('Albert', 'Albert2424$','2023-09-08','BANNIS')
+	
+INSERT INTO utilisateurs (nom_utilisateur,mot_de_passe,date_de_creation,etat) VALUES ('Thirtsa', 'Thirtsa2828$','2023-09-08','ACTIF')
+	
+INSERT INTO utilisateurs (nom_utilisateur,mot_de_passe,date_de_creation,etat) VALUES ('Dwitchy', 'Dwitchy33$33$','2023-09-08','ACTIF')
+	
+UPDATE utilisateurs
+SET etat ='BANNIS' WHERE  nom_utilisateur = 'Thirtsa' AND etat ='ACTIF'; 
+
+question 3:
+
+SELECT AVG(produits.prix) FROM produits;
+
+	
