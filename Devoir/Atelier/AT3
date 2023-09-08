@@ -72,27 +72,6 @@ SET etat ='BANNIS' WHERE  nom_utilisateur = 'Thirtsa' AND etat ='ACTIF';
 
 SELECT AVG(produits.prix) FROM produits;
 
-SELECT
-    category,
-    AVG(prix) AS average_price
-FROM (
-    SELECT
-        nom,
-        prix,
-        'hard_disk' AS category
-    FROM produits
-    WHERE EXISTS (SELECT 1 FROM disque_dur WHERE produits.id = disque_dur.id)
-    
-    UNION ALL
-    
-    SELECT
-        nom,
-        prix,
-        'graphics_card' AS category
-    FROM produits
-    WHERE EXISTS (SELECT 1 FROM carte_graphique WHERE produits.id = carte_graphique.id)
-) AS subquery
-GROUP BY category;
 
 
 	
