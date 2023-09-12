@@ -20,3 +20,9 @@ CREATE TABLE achats(
 
 CREATE TABLE ajustements(
 )INHERITS (transactions);
+
+INSERT INTO produits (nom, quantite, prix) VALUES ('PS4',12, 321);
+INSERT INTO produits (nom, quantite, prix) VALUES ('DELL XP 15',24, 1269);
+INSERT INTO produits (nom, quantite, prix) VALUES ('Z-FLIP 5',36, 1529);
+
+
