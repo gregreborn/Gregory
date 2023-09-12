@@ -1,1 +1,22 @@
+CREATE TABLE produits (
+	id SERIAL PRIMARY KEY,
+	nom VARCHAR(255),
+	quantite INT,
+	prix FLOAT(10)
+)
 
+CREATE TABLE transactions(
+	id SERIAL PRIMARY KEY,
+	quantite INT,
+	FOREIGN KEY (id) REFERENCES produits (id),
+	moment TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+
+CREATE TABLE ventes(
+)INHERITS (transactions);
+
+CREATE TABLE achats(
+)INHERITS (transactions);
+
+CREATE TABLE ajustements(
+)INHERITS (transactions);
