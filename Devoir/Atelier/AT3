@@ -72,6 +72,18 @@ SET etat ='BANNIS' WHERE  nom_utilisateur = 'Thirtsa' AND etat ='ACTIF';
 
 SELECT AVG(produits.prix) FROM produits;
 
+SELECT p.relname AS category, AVG(pd.prix) AS prix FROM produits pd INNER JOIN pg_class p ON pd.tableoid = p.oid GROUP BY p.relname;
+
+SELECT 'produits' AS produits_type, AVG(prix) AS prix
+FROM produits
+UNION
+SELECT 'disque_dur' AS produits_type, AVG(prix) AS prix
+FROM disque_dur
+UNION
+SELECT 'carte_graphique' AS produits_type, AVG(prix) AS prix
+FROM carte_graphique;
+
+
 
 
 	
