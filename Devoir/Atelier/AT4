@@ -1,3 +1,5 @@
+numero1:
+
 CREATE TABLE produits (
 	id SERIAL PRIMARY KEY,
 	nom VARCHAR(255),
@@ -25,4 +27,50 @@ INSERT INTO produits (nom, quantite, prix) VALUES ('PS4',12, 321);
 INSERT INTO produits (nom, quantite, prix) VALUES ('DELL XP 15',24, 1269);
 INSERT INTO produits (nom, quantite, prix) VALUES ('Z-FLIP 5',36, 1529);
 
+numero2:
+CREATE OR REPLACE PROCEDURE ajuster_quantite(IN produits_id INT, IN quantite_ajuster INT)
+	language plpgsql
+AS $$
+BEGIN
+	IF NOT EXISTS (SELECT 1 FROM produits WHERE id = produits_id) THEN 
+		RAISE EXCEPTION 'The product with id % does not exist.', produit_id;
+	END IF;
+	
+	INSERT INTO transactions
+							(quantite)
+	VALUES					(@quantite_ajuster);
+	
+	UPDATE produits	
+	SET    quantite = quantite_ajuster 
+	WHERE	id = produits_id;
+END; 
+$$;
 
+
+CALL ajuster_quantite(1, 24);
+
+numero 3:
+
+CREATE OR REPLACE PROCEDURE ajouter_transaction(IN produits_id INT, IN quantite_acheter INT)
+	language plpgsql
+AS $$
+BEGIN
+	IF EXISTS (SELECT 1 FROM produits WHERE id = produits_id) THEN
+		RAISE EXCEPTION 'The product with id % already exist.', produit_id;
+	ELSE IF (quantite_acheter > 0)THEN
+		IF (quantite_acheter > produits.quantite ) THEN
+			RAISE EXCEPTION 'Il ne reste pas assez de %', produits.nom;
+	ELSE 	quantite_acheter= quantite_acheter*(-1);
+	END IF;
+	
+	INSERT INTO ventes 
+						(quantite)
+	VALUES				(quantite_acheter);
+	
+	UPDATE produits	
+	SET    quantite = quantite_acheter
+	WHERE	id = produits_id;
+END; 
+$$;
+
+CALL ajouter_transaction(1,12);
