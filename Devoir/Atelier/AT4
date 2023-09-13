@@ -57,10 +57,11 @@ AS $$
 BEGIN
 	IF EXISTS (SELECT 1 FROM produits WHERE id = produits_id) THEN
 		RAISE EXCEPTION 'The product with id % already exist.', produit_id;
-	ELSE IF (quantite_acheter > 0)THEN
-		IF (quantite_acheter > produits.quantite ) THEN
-			RAISE EXCEPTION 'Il ne reste pas assez de %', produits.nom;
-	ELSE 	quantite_acheter= quantite_acheter*(-1);
+	ELSIF (quantite_acheter > 0)THEN
+		IF (quantite_acheter > (SELECT quantite FROM produits WHERE id = produits_id) ) THEN
+			RAISE EXCEPTION 'Il ne reste pas assez de %', (SELECT nom FROM produits WHERE id = produits_id);
+		END IF;
+	ELSE 	quantite_acheter= -quantite_acheter;
 	END IF;
 	
 	INSERT INTO ventes 
@@ -68,9 +69,7 @@ BEGIN
 	VALUES				(quantite_acheter);
 	
 	UPDATE produits	
-	SET    quantite = quantite_acheter
+	SET    quantite = quantite - quantite_acheter
 	WHERE	id = produits_id;
 END; 
 $$;
-
-CALL ajouter_transaction(1,12);
