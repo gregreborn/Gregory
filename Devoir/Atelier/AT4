@@ -75,3 +75,17 @@ END;
 $$;
 
 CALL ajouter_transaction(3,12);
+
+numero 4:
+
+sql simple: SELECT SUM(produits.quantite*produits.prix) AS Prix_Total_inventaire FROM produits;
+sql pure (fonction):
+
+CREATE OR REPLACE FUNCTION valeur_inventaire()
+	RETURNS DECIMAL(10, 2)
+	LANGUAGE sql
+AS $$
+    SELECT SUM(quantite * prix) AS total_value 
+FROM produits;
+$$
+numero 5:
