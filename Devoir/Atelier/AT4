@@ -89,3 +89,55 @@ AS $$
 FROM produits;
 $$
 numero 5:
+fonction1:
+CREATE OR REPLACE FUNCTION transactions_par_produit(produit_id INT)
+	RETURNS TABLE (id INT,quantite INT,moment TIMESTAMP) 
+	LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM produits WHERE id = produit_id) THEN
+        RAISE NOTICE 'Le produit n''existe pas.';
+        RETURN;
+    END IF;
+    RETURN QUERY 
+    SELECT id, quantite, moment FROM ventes WHERE id = produit_id
+    UNION ALL
+    SELECT id, -quantite, moment FROM achats WHERE id = produit_id
+    UNION ALL
+    SELECT id, quantite || '=', moment FROM ajustements WHERE id = produit_id
+    ORDER BY moment;
+END$$;
+
+fonction2:
+CREATE OR REPLACE FUNCTION transactions_par_produit(debut TIMESTAMP, fin TIMESTAMP)
+	RETURNS TABLE (id INT,quantite INT,moment TIMESTAMP) 
+	LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY 
+    SELECT id, quantite, moment FROM ventes WHERE moment BETWEEN debut AND fin
+    UNION ALL
+    SELECT id, -quantite, moment FROM achats WHERE moment BETWEEN debut AND fin
+    UNION ALL
+    SELECT id, quantite || '=', moment FROM ajustements WHERE moment BETWEEN debut AND fin
+    ORDER BY moment;
+END$$;
+
+fonction3:
+CREATE OR REPLACE FUNCTION transactions_par_produit(produit_id INT, debut TIMESTAMP, fin TIMESTAMP)
+	RETURNS TABLE (id INT,quantite INT,moment TIMESTAMP)
+	LANGUAGE plpgsql 
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM produits WHERE id = produit_id) THEN
+        RAISE NOTICE 'Le produit n''existe pas.';
+        RETURN;
+    END IF;
+    RETURN QUERY 
+    SELECT id, quantite, moment FROM ventes WHERE id = produit_id AND moment BETWEEN debut AND fin
+    UNION ALL
+    SELECT id, -quantite, moment FROM achats WHERE id = produit_id AND moment BETWEEN debut AND fin
+    UNION ALL
+    SELECT id, quantite || '=', moment FROM ajustements WHERE id = produit_id AND moment BETWEEN debut AND fin
+    ORDER BY moment;
+END$$;
