@@ -1,1 +1,22 @@
 
+numero 1 a:
+CREATE OR REPLACE PROCEDURE creator_produits()
+	language plpgsql
+AS $$
+BEGIN 
+	CREATE TABLE produits(
+	id SERIAL PRIMARY KEY,
+	nom VARCHAR(255) NOT NULL,
+	prix DECIMAL(10,2) NOT NULL,
+	quantite INT NOT NULL,
+	creation TIMESTAMP,
+	mise_a_jour TIMESTAMP);
+END $$;
+numero 1 b:
+numero 1 c:
+
+numero 2 a:
+numero 2 b:
+
+numero 3:
+
