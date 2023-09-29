@@ -45,6 +45,11 @@ BEFORE INSERT ON produits
 FOR EACH ROW
 EXECUTE FUNCTION validate_produits();
 
+CREATE TRIGGER validate_produits
+BEFORE INSERT ON produits
+FOR EACH ROW
+EXECUTE FUNCTION validate_produits();
+
 INSERT INTO produits (nom, prix, quantite) VALUES ('Produit A', 10, 5);
 INSERT INTO produits (nom, prix, quantite) VALUES ('Produit B', -10, 5);
 INSERT INTO produits (nom, prix, quantite) VALUES ('Produit A', 10, 5);
