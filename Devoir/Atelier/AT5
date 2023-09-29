@@ -13,6 +13,38 @@ BEGIN
 	mise_a_jour TIMESTAMP);
 END $$;
 numero 1 b:
+CREATE OR REPLACE FUNCTION validate_produits()
+	RETURNS TRIGGER 
+	language plpgsql
+	AS $$
+	
+DECLARE 
+	temp_product RECORD;
+BEGIN
+
+	  IF NEW.prix < 0 OR NEW.quantite < 0 THEN
+        RAISE EXCEPTION 'Prix et quantite doivent être positifs ou zéro';
+      END IF;
+	
+    SELECT INTO temp_product
+    FROM produits
+    WHERE nom = NEW.nom;
+    
+    IF FOUND THEN
+        RAISE EXCEPTION 'Le nom du produit doit être unique';
+    END IF;
+
+	NEW.creation := NOW();
+    NEW.mise_a_jour := NULL;
+    
+    RETURN NEW;
+END $$;
+
+CREATE TRIGGER validate_produits
+BEFORE INSERT ON produits
+FOR EACH ROW
+EXECUTE FUNCTION validate_produits();
+
 numero 1 c:
 
 numero 2 a:
