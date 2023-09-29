@@ -141,3 +141,61 @@ SELECT * FROM produits_tous();
 
 numero 3:
 
+CREATE OR REPLACE FUNCTION update_produit_quantite_on_sale()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE produits
+    SET quantite = quantite - NEW.quantite
+    WHERE id = NEW.id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_produit_quantite_on_achat()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE produits
+    SET quantite = quantite + NEW.quantite
+    WHERE id = NEW.id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION update_produit_quantite_on_adjustment()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE produits
+    SET quantite = NEW.quantite
+    WHERE id = NEW.id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER update_produit_after_sale
+AFTER INSERT ON ventes
+FOR EACH ROW
+EXECUTE FUNCTION update_produit_quantite_on_sale();
+
+CREATE TRIGGER update_produit_after_purchase
+AFTER INSERT ON achats
+FOR EACH ROW
+EXECUTE FUNCTION update_produit_quantite_on_achat();
+
+CREATE TRIGGER update_produit_after_adjustment
+AFTER INSERT ON ajustements
+FOR EACH ROW
+EXECUTE FUNCTION update_produit_quantite_on_adjustment();
+
+
+
+INSERT INTO ventes (id, quantite) VALUES (1, 5);
+
+
+INSERT INTO achats (id, quantite) VALUES (1, 10);
+
+
+INSERT INTO ajustements (id, quantite) VALUES (1, 20);
