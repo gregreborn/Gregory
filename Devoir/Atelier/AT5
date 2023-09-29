@@ -83,7 +83,61 @@ SET prix = 20.00
 WHERE id = 1;
 
 numero 2 a:
+ALTER TABLE produits
+ADD COLUMN supprime TIMESTAMP DEFAULT NULL;
+
+CREATE OR REPLACE FUNCTION soft_delete_produits()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Intercepter la tentative de suppression et mettre à jour le champ 'supprime' avec la date et l'heure actuelles
+    NEW.supprime := NOW();
+    RETURN NULL; -- empêche la suppression réelle
+END;
+$$;
+
+CREATE TRIGGER soft_delete_trigger
+BEFORE DELETE ON produits
+FOR EACH ROW
+EXECUTE FUNCTION soft_delete_produits();
+
+
 numero 2 b:
+
+CREATE OR REPLACE FUNCTION produits_actifs()
+RETURNS SETOF produits
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   RETURN QUERY 
+   SELECT * FROM produits WHERE supprime IS NULL;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION produits_supprime()
+RETURNS SETOF produits
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   RETURN QUERY 
+   SELECT * FROM produits WHERE supprime IS NOT NULL;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION produits_tous()
+RETURNS SETOF produits
+LANGUAGE plpgsql
+AS $$
+BEGIN
+   RETURN QUERY 
+   SELECT * FROM produits;
+END;
+$$;
+
+SELECT * FROM produits_actifs();
+SELECT * FROM produits_supprime();
+SELECT * FROM produits_tous();
 
 numero 3:
 
