@@ -1,0 +1,205 @@
+#TP-BD
+
+## Les tables:
+
+1. **Personnages** :
+     - CLÉ PRIMAIRE SÉRIE CharacterID
+     - Nom VARCHAR(255) NON NULL
+     - Classe VARCHAR(255) NON NULL
+     - Stat1 INT NON NULL
+     - Stat2 INT NON NULL
+     - Stat3 INT NON NULL
+     - Stat4 INT NON NULL
+     - Expérience INT NOT NULL DEFAULT 0
+     - Niveau INT NON NULL PAR DEFAUT 1
+     -HP INT NON NULL
+     - Mana INT NON NULL
+     - Argent DECIMAL(10, 2) NON NULL PAR DEFAUT 0,00
+2. **Équipement** :
+     - ID d'équipement CLÉ PRIMAIRE SÉRIE
+     - Tapez VARCHAR(50) NON NULL
+     - Matériau VARCHAR(50) NON NULL
+     - Condition VARCHAR(50) NON NULLE
+     - Prix DECIMAL(10, 2) NON NULL
+     - StatModifier INT NON NULL
+3. **Character_Equipment** :
+     - CharacterEquipmentID CLÉ PRIMAIRE SÉRIE
+     - CharacterID INT RÉFÉRENCES Caractères(CharacterID)
+     - EquipmentID INT RÉFÉRENCES Équipement(EquipmentID)
+     - Emplacement VARCHAR(50) NON NULL
+4. **Monstres** :
+     - CLÉ PRIMAIRE SÉRIE MonsterID
+     - Nom de base VARCHAR(50) NON NULL
+     - Rang VARCHAR(50) NON NULL
+     - BaseHP INT NON NULL
+     - BaseStrength INT NON NULL
+     - RankModifier DECIMAL(3, 2) NON NULL PAR DÉFAUT 1.0
+5. **Quêtes** :
+     - CLÉ PRIMAIRE SÉRIE QuestID
+     - TEXTE DE DESCRIPTION NON NULL
+     - MonsterID INT RÉFÉRENCES Monstres(MonsterID)
+     - IsBoss BOOLEAN NOT NULL DEFAULT FALSE
+     - XP_Reward INT NON NULL
+     - Money_Reward DECIMAL(10, 2) NON NULL
+6. **Character_Quests** :
+     - CLÉ PRIMAIRE SÉRIE CharacterQuestID
+     - CharacterID INT RÉFÉRENCES Caractères(CharacterID)
+     - QuestID INT RÉFÉRENCES Quêtes(QuestID)
+     - StartTime TIMESTAMP NON NULL
+     - Horodatage de fin
+     - Statut VARCHAR(50) NON NULL PAR DÉFAUT 'En cours'
+7. sorts (
+id CLÉ PRIMAIRE SÉRIE,
+nom VARCHAR(255) NOT NULL UNIQUE,
+TEXTE descriptif,
+mana_cost ENTIER NON NULL,
+effect_type VARCHAR(50) NOT NULL CHECK(effect_type IN ('damage', 'heal', ...)), -- Liste tous les types d'effet possibles
+effect_value INTEGER NON NULL,
+);
+8. **Character_Spells** :
+     - CLÉ PRIMAIRE SÉRIE CharacterSpellID
+     - CharacterID INT RÉFÉRENCES Caractères(CharacterID)
+     - SpellID INT RÉFÉRENCES Sorts (SpellID)
+
+## Remarques:
+
+- **`SERIAL`** est un entier de quatre octets à incrémentation automatique PostgreSQL. Il fournit un identifiant unique pour chaque ligne.
+- **`REFERENCES`** est utilisé pour configurer des relations de clé étrangère. Cela garantit l’intégrité référentielle entre les tables.
+- **`VARCHAR`** désigne des chaînes de caractères de longueur variable. Le chiffre entre parenthèses indique la longueur maximale.
+- **`DECIMAL`** est un type numérique exact. Les nombres entre parenthèses représentent respectivement la précision (nombre total de chiffres) et l’échelle (nombre de chiffres après la virgule).
+- **`TIMESTAMP`** stocke une date et une heure sans fuseau horaire.
+- **`BOOLEAN`** stocke une valeur booléenne, VRAI ou FAUX.
+- **`TEXT`** est utilisé pour les chaînes longues qui n'ont pas de longueur prédéterminée.
+
+Ces spécifications garantissent que la base de données est conçue pour stocker et gérer efficacement les données requises pour le jeu.
+
+```sql
+CRÉER UNE TABLE Caractères (
+     CharacterID CLÉ PRIMAIRE SÉRIE,
+     Nom VARCHAR(255) NON NULL,
+     Course VARCHAR(255) NON NULL,
+     Classe VARCHAR(255) NON NULL,
+     Stat1 INT NON NULL,
+     Stat2 INT NON NULL,
+     Stat3 INT NON NULL,
+     Stat4 INT NON NULL,
+     Expérience INT NOT NULL DEFAULT 0,
+     Niveau INT NON NULL PAR DÉFAUT 1,
+     HP INT NON NULL,
+     Mana INT PAS NULL,
+     Argent DECIMAL(10, 2) NON NULL PAR DÉFAUT 0,00
+);
+
+CREATE TABLE Équipement (
+     ID d'équipement CLÉ PRIMAIRE SÉRIE,
+     Tapez VARCHAR(50) NON NULL,
+     Matériau VARCHAR(50) NON NULL,
+     Condition VARCHAR(50) NON NULLe,
+     Prix DECIMAL(10, 2) NON NULL,
+     StatModifier INT NON NULL
+);
+
+CREATE TABLE Caractère_Equipment (
+     CharacterEquipmentID CLÉ PRIMAIRE SÉRIE,
+     CharacterID INT RÉFÉRENCES Caractères(CharacterID),
+     EquipmentID INT RÉFÉRENCES Équipement(EquipmentID),
+     Emplacement VARCHAR(50) NON NULL
+);
+
+CRÉER UNE TABLE Monstres (
+     CLÉ PRIMAIRE SÉRIE MonsterID,
+     Nom de base VARCHAR(50) NON NULL,
+     Rang VARCHAR(50) NON NULL,
+     BaseHP INT NON NULL,
+     BaseStrength INT NON NULL,
+     RankModifier DECIMAL(3, 2) NON NULL PAR DÉFAUT 1.0
+);
+
+Quêtes CRÉER UNE TABLE (
+     QuestID CLÉ PRIMAIRE SÉRIE,
+     Description TEXTE NON NULL,
+     MonsterID INT RÉFÉRENCES Monstres(MonsterID),
+     IsBoss BOOLEAN NOT NULL DEFAULT FALSE,
+     XP_Reward INT NON NULL,
+     Money_Reward DECIMAL(10, 2) NON NULL
+);
+
+CREATE TABLE Character_Quests (
+     CharacterQuestID CLÉ PRIMAIRE SÉRIE,
+     CharacterID INT RÉFÉRENCES Caractères(CharacterID),
+     QuestID INT RÉFÉRENCES Quêtes(QuestID),
+     StartTime TIMESTAMP NON NULL,
+     Heure de fin TIMESTAMP,
+     Statut VARCHAR(50) NON NULL PAR DÉFAUT « En cours »
+);
+
+CRÉER UNE TABLE Sorts (
+     CLÉ PRIMAIRE SÉRIE SpellID,
+     Nom VARCHAR(255) NON NULL,
+     Effet TEXTE NON NULL,
+     TriggerCondition TEXTE NON NULL
+);
+
+CREATE TABLE Personnage_Spells (
+     CharacterSpellID CLÉ PRIMAIRE SÉRIE,
+     CharacterID INT RÉFÉRENCES Caractères(CharacterID),
+     SpellID INT RÉFÉRENCES Sorts(SpellID)
+);
+
+```
+
+1. Combats :
+     - Fonction : `calculate_damage(character_id INT, monster_id INT)` RETOURNE INT :
+         - Calcule les dégâts qu'un personnage peut infliger à un monstre en fonction des statistiques du personnage, des modificateurs d'équipement et de la défense/rang du monstre.
+     - Procédure : `execute_combat(character_id INT, quest_id INT)` :
+         - Simule un combat entre le personnage et un monstre.
+         - Utilise la fonction `calculate_damage`.
+         - Détermine si le personnage gagne, perd ou lance un sort.
+         - Met à jour les HP, le mana et l'expérience du personnage en conséquence.
+2. Quête normale et 3. Quête de boss :
+     - Fonction : `assign_quest(character_id INT, quest_type VARCHAR)` RETURNS QUEST_ID :
+         - Attribue une quête aléatoire à un personnage. Si `quest_type` est 'boss', il sélectionne une quête de boss.
+     - Procédure : `complete_quest(character_id INT, quest_id INT)` :
+         - Vérifie si le personnage a terminé la quête.
+         - Accorde de l'expérience et de l'argent au personnage.
+3. Magie :
+     - Déclencheur : `cast_spell_trigger` :
+         - Se déclenche chaque fois que les PV d'un personnage tombent en dessous de 50 % ou dans d'autres conditions spécifiées dans la colonne TriggerCondition du tableau des sorts.
+         - Lance automatiquement un sort de guérison ou tout sort applicable en fonction de la condition.
+4. Monter de niveau :
+     - Déclencheur : `level_up_trigger` :
+         - Se déclenche chaque fois que l'expérience d'un personnage dépasse le seuil de son niveau actuel.
+         - Augmente automatiquement le niveau du personnage et attribue de nouveaux points de statistiques.
+5. Mort avec perte de niveau :
+     - Procédure : `handle_death(character_id INT)` :
+         - Lorsque les PV d'un personnage atteignent 0, cette procédure réduit l'expérience du personnage de 50%.
+         - Vérifie si le personnage doit être rétrogradé à un niveau inférieur en fonction de l'expérience réduite.
+6. Enregistrer la progression :
+     - Procédure : `save_progress(character_id INT)` :
+         - Prend un instantané de l'état actuel du personnage, y compris le niveau, l'équipement, les HP, le mana, etc.
+         - La conception de la base de données doit intrinsèquement « enregistrer » la progression à mesure que les données changent, mais cette procédure peut être utilisée pour créer des journaux ou des sauvegardes.
+7. Script de création et d'initialisation :
+     - Script : `initialize_database.sql` :
+         - Contient toutes les instructions CREATE TABLE pour initialiser la base de données.
+         - Possède des instructions INSERT pour pré-remplir la base de données avec les données initiales du jeu telles que l'équipement, les monstres, etc.
+         - Contient toutes les instructions CREATE FUNCTION, CREATE PROCEDURE et CREATE TRIGGER.
+        
+
+[PROCÉDURES ET FONCTIONS POUR DB](https://www.notion.so/PROCEDURES-AND-FUNCTIONS-FOR-DB-4ad41c8b002e4fbb82b758cc0db6bac6?pvs=21)
+
+[FONCTIONS POUR NOTRE PROJET C# -DB](https://www.notion.so/FUNCTIONS-FOR-OUR-C-PROJECT-DB-de89f8fb3c1a44a399b430b9f453fca5?pvs=21)
+
+[ÉTAPES](https://www.notion.so/STEPS-824ca5443ab54ef692ce911b03a054ab?pvs=21)
+
+[PROCÉDURES/FONCTIONS MISE À JOUR](https://www.notion.so/UPDATED-PROCEDURES-FUNCTIONS-a42aa8eef3a74bbc98058d86563e5e41?pvs=21)
+
+[fonction de base de données STEPS](https://www.notion.so/database-function-STEPS-52ca2641aded4525a099963c097a3ff7?pvs=21)
+
+INSÉRER DANS les personnages (Nom, Classe, niveau, expérience, PV, MP, force, dextérité, argent)
+VALEURS
+('Bodvar', 'Brawler', 1, 1, 11, 7, 110, 20, 150.00),
+("Orion", "Lancier", 1, 1, 13, 14, 90, 90, 130,00),
+("Nix", "Scythe-Wielder", 1, 11, 16, 9, 95, 50, 120,00),
+("Monsieur Roland", "Chevalier", 1, 1, 10, 11, 115, 40, 140,00) ;
+
+[FONCTIONS TESTÉES ✅](https://www.notion.so/TESTED-FUNCTIONS-5edbdd5333364b6e88487c1f357de590?pvs=21)
