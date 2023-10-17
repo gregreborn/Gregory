@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Progress_Brawlhalla/App.axaml" value="Progress_Brawlhalla/Progress_Brawlhalla.csproj" />
+        <entry key="Progress_Brawlhalla/Views/MainWindow.axaml" value="Progress_Brawlhalla/Progress_Brawlhalla.csproj" />
+        <entry key="Progress_Brawlhalla/Views/SelectWindow.axaml" value="Progress_Brawlhalla/Progress_Brawlhalla.csproj" />
+        <entry key="Progress_Brawlhalla/Views/SimulationWindow.axaml" value="Progress_Brawlhalla/Progress_Brawlhalla.csproj" />
+        <entry key="Progress_Brawlhalla/Views/Temp.axaml" value="Progress_Brawlhalla/Progress_Brawlhalla.csproj" />
+        <entry key="Progress_Brawlhalla/Views/UserControl1.axaml" value="Progress_Brawlhalla/Progress_Brawlhalla.csproj" />
+        <entry key="Progress_Brawlhalla/Views/temp.axaml" value="Progress_Brawlhalla/Progress_Brawlhalla.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

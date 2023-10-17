@@ -1,0 +1,222 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Progress_Brawlhalla.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:Progress_Brawlhalla.Models"
+        xmlns:global="clr-namespace:"
+        mc:Ignorable="d"
+        x:Class="Progress_Brawlhalla.Views.SimulationWindow"
+        x:DataType="global:SimulationWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Game Simulation"
+        d:DesignWidth="800"
+        d:DesignHeight="450">
+    <Window.Styles>
+        <!-- Custom GroupBox Style -->
+        <Style Selector="HeaderedContentControl">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border ZIndex="1" Padding="5,0,5,0" Background="White" Margin="0,0,0,0">
+                                <TextBlock FontWeight="Bold" Text="{TemplateBinding Header}" />
+                            </Border>
+                            <Border Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="2" Margin="0,10,0,0"
+                                    BorderBrush="{TemplateBinding Background}"
+                                    BorderThickness="1">
+                                <ContentPresenter Content="{TemplateBinding Content}" />
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Styles>
+            <Grid>
+                
+                <!-- Define rows for the overall layout -->
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/> <!-- Character Stats -->
+                    <RowDefinition Height="1*"/> <!-- Spell -->
+                    <RowDefinition Height="1*"/> <!-- Equipment -->
+                    <RowDefinition Height="1*"/> <!-- Monster -->
+                    <RowDefinition Height="2*"/> <!-- Feedback messages -->
+                    <RowDefinition Height="Auto"/> <!-- ID TextBox -->
+                    <RowDefinition Height="Auto"/> <!-- Start Game button -->
+                </Grid.RowDefinitions>
+
+                <!-- Define columns for the overall layout -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/> <!-- Left Column (Character Stats, Spell) -->
+                    <ColumnDefinition Width="1*"/> <!-- Right Column (Equipment, Monster) -->
+                    <ColumnDefinition Width="1*"/> <!-- This is the new third column -->
+                </Grid.ColumnDefinitions>
+
+                <!-- Left column content (Character Stats and Spell) -->
+                <StackPanel Grid.Column="0">
+                    <HeaderedContentControl Header="Character">
+                        <StackPanel>
+                            <Grid>
+                                <!-- Define columns for the grid -->
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/> <!-- For "Stat" and "Value" TextBlocks -->
+                                    <RowDefinition Height="Auto"/> <!-- For "Level:" -->
+                                    <RowDefinition Height="Auto"/> <!-- For "Strength:" -->
+                                    <RowDefinition Height="Auto"/> <!-- For "Dexterity:" -->
+                                    <RowDefinition Height="Auto"/> <!-- For "MP:" -->
+                                    <RowDefinition Height="Auto"/> <!-- For "HP:" -->
+                                    <RowDefinition Height="Auto"/> <!-- For "Max MP:" -->
+                                    <RowDefinition Height="Auto"/> <!-- For "Max HP:" -->
+                                    <RowDefinition Height="Auto"/> <!-- For "EXP:" -->
+                                </Grid.RowDefinitions>
+
+                                    <TextBlock Text="Stat" Grid.Column="0"/>
+                                    <TextBlock Grid.Row="0" Text="Value" Grid.Column="1"/>
+                                    <TextBlock Text="Level:" Grid.Row="1" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding SelectedCharacter.Level}" Grid.Row="1" Grid.Column="1"/>
+                                    <TextBlock Text="Strength:" Grid.Row="2" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding SelectedCharacter.Strength}" Grid.Row="2" Grid.Column="1"/>
+                                    <TextBlock Text="Dexterity:" Grid.Row="3" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding SelectedCharacter.Dexterity}" Grid.Row="3" Grid.Column="1"/>
+                                    <TextBlock Text="MP:" Grid.Row="4" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding SelectedCharacter.Mp}" Grid.Row="4" Grid.Column="1"/>
+                                    <TextBlock Text="HP:" Grid.Row="5" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding SelectedCharacter.Hp}" Grid.Row="5" Grid.Column="1"/>
+                                    <TextBlock Text="Max MP:" Grid.Row="6" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding SelectedCharacter.MaxMp}" Grid.Row="6" Grid.Column="1"/>
+                                    <TextBlock Text="Max HP:" Grid.Row="7" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding SelectedCharacter.MaxHp}" Grid.Row="7" Grid.Column="1"/>
+                                    <TextBlock Text="EXP:" Grid.Row="8" Grid.Column="0"/>
+                                    <TextBlock Text="{Binding SelectedCharacter.Experience}" Grid.Row="8" Grid.Column="1"/>
+                            </Grid>
+                            <ProgressBar Name="Experience" Height="20"/>
+                        </StackPanel>
+                    </HeaderedContentControl>
+
+                    <!-- Spell -->
+                    <HeaderedContentControl Header="Spell" >
+                        <Grid ColumnDefinitions="*,*">
+                            <!-- Assume you will bind your data here -->
+                            <TextBlock Text="Name" Grid.Column="0"/>
+                            <TextBlock Text="Effect Type" Grid.Column="1"/>
+                            <!-- Add more rows as needed -->
+                        </Grid>
+                    </HeaderedContentControl>
+                </StackPanel>
+
+                <!-- Right column content (Equipment) -->
+                <StackPanel Grid.Row="0" Grid.Column="1">
+                    <HeaderedContentControl Header="Equipment" >
+                        <Grid>
+                            <!-- Define columns for the grid -->
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                                    
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/> <!-- For "Equipment" and "Slot" TextBlocks -->
+                                <RowDefinition Height="Auto"/> <!-- For "Weapon:" -->
+                                <RowDefinition Height="Auto"/> <!-- For "Armour:" -->
+                                <RowDefinition Height="Auto"/> <!-- For "Helmet:" -->
+                                <RowDefinition Height="Auto"/> <!-- For "Boots:" -->
+                            </Grid.RowDefinitions>
+                        
+                            <TextBlock Text="Equipment" Grid.Column="0"/>
+                            <TextBlock Grid.Row="0" Text="Slot" Grid.Column="1"/>
+                            <TextBlock Text="Weapon:" Grid.Row="1" Grid.Column="0"/>
+                            <TextBlock Text="{Binding WeaponSlot}" Grid.Row="1" Grid.Column="1"/>
+                            <TextBlock Text="Armour:" Grid.Row="2" Grid.Column="0"/>
+                            <TextBlock Text="{Binding ArmourSlot}" Grid.Row="2" Grid.Column="1"/>
+                            <TextBlock Text="Helmet:" Grid.Row="3" Grid.Column="0"/>
+                            <TextBlock Text="{Binding HelmetSlot}" Grid.Row="3" Grid.Column="1"/>
+                            <TextBlock Text="Boots:" Grid.Row="4" Grid.Column="0"/>
+                            <TextBlock Text="{Binding BootsSlot}" Grid.Row="4" Grid.Column="1"/>
+                        </Grid>
+                    </HeaderedContentControl>
+                    <!-- Monster -->
+                    <HeaderedContentControl Header="Next Quest Monsters!" >
+                           <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Name" Grid.Column="0"/>
+                                        <TextBlock Text="Rank" Grid.Column="1"/>
+                                    </Grid>
+                                <ListBox ItemsSource="{Binding QuestMonstersList}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid ColumnDefinitions="*,*">
+                                                <TextBlock Text="{Binding Type}" Grid.Column="0"/> <!-- Assuming each monster has a Name property -->
+                                                <TextBlock Text="{Binding Rank}" Grid.Column="1"/> <!-- Assuming each monster has a Rank property -->
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <ProgressBar    Minimum="0" 
+                                                Maximum="4" 
+                                                Value="{Binding ProgressValue}" 
+                                                Height="20"/>
+                        </StackPanel>
+                    </HeaderedContentControl>
+                </StackPanel>
+                <!-- Right column content (Quests) -->
+                <StackPanel Grid.Row="0" Grid.Column="2" >
+                    <HeaderedContentControl Header="Quests" >
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Id" Grid.Column="0"/>
+                                <TextBlock Text="Status" Grid.Column="1"/>
+                            </Grid>
+                            <ListBox ItemsSource="{Binding CharacterQuests}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="*,*">
+                                            <!-- Assuming you have properties named ID and Status in your quest objects -->
+                                            <TextBlock Text="{Binding QuestId}" Grid.Column="0"/>
+                                            <TextBlock Text="{Binding Status}" Grid.Column="1"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
+                    </HeaderedContentControl>
+                    <ProgressBar Minimum="0" 
+                                 Maximum="100" 
+                                 Value="{Binding OverallProgressValue}" Height="20"/>
+                </StackPanel>
+                <!-- Add this just before the closing </Grid> tag in SimulationWindow.axaml -->
+                <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" 
+                           Text="{Binding FeedbackMessages[0]}" 
+                           VerticalAlignment="Stretch" 
+                           HorizontalAlignment="Stretch"/>
+                <TextBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" 
+                         Text="{Binding CharacterId}" 
+                         VerticalAlignment="Center" 
+                         HorizontalAlignment="Stretch"/>
+                <Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3" 
+                        Content="Start Game" 
+                        Command="{Binding StartSimulationCommand}"/>
+            </Grid>
+</Window>
