@@ -110,12 +110,26 @@
 
                     <!-- Spell -->
                     <HeaderedContentControl Header="Spell" >
-                        <Grid ColumnDefinitions="*,*">
-                            <!-- Assume you will bind your data here -->
-                            <TextBlock Text="Name" Grid.Column="0"/>
-                            <TextBlock Text="Effect Type" Grid.Column="1"/>
-                            <!-- Add more rows as needed -->
-                        </Grid>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="Name" Grid.Column="0"/>
+                                <TextBlock Text="Effect Type" Grid.Column="1"/>
+                            </Grid>
+                            <ListBox ItemsSource="{Binding CharacterSpells}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid ColumnDefinitions="*,*">
+                                            <TextBlock Text="{Binding Name}" Grid.Column="0"/> <!-- Assuming each monster has a Name property -->
+                                            <TextBlock Text="{Binding EffectType}" Grid.Column="1"/> <!-- Assuming each monster has a Rank property -->
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </StackPanel>
                     </HeaderedContentControl>
                 </StackPanel>
 
@@ -150,7 +164,7 @@
                         </Grid>
                     </HeaderedContentControl>
                     <!-- Monster -->
-                    <HeaderedContentControl Header="Next Quest Monsters!" >
+                    <HeaderedContentControl Header="Quest Monsters!" >
                            <StackPanel>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -211,12 +225,5 @@
                            Text="{Binding FeedbackMessages[0]}" 
                            VerticalAlignment="Stretch" 
                            HorizontalAlignment="Stretch"/>
-                <TextBox Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="3" 
-                         Text="{Binding CharacterId}" 
-                         VerticalAlignment="Center" 
-                         HorizontalAlignment="Stretch"/>
-                <Button Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="3" 
-                        Content="Start Game" 
-                        Command="{Binding StartSimulationCommand}"/>
             </Grid>
 </Window>

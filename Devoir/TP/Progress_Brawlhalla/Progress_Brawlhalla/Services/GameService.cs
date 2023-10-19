@@ -83,19 +83,20 @@ namespace Progress_Brawlhalla.Services
         }
 
 
-        public async Task<List<Monster>> GetListMonstersForQuestAsync(int questId)
+        public async Task<List<Monster>> GetListMonstersForTempQuestAsync(int questId)
         {
             var monsters = new List<Monster>();
 
             using var connection = new NpgsqlConnection(ConnectionString);
             await connection.OpenAsync();
 
-            // We will join the QuestMonsters table and the Monster table on MonsterId
+            // We will join the TempMonsters table and the Monster table on MonsterId
+            // Update the JOIN clause to fetch from the quest_temp_monsters table
             string query = @"
                             SELECT m.id, m.type, m.rank, m.base_hp, m.base_strength 
-                            FROM quest_monsters qm
+                            FROM quest_temp_monsters qm
                             JOIN monsters m ON qm.monster_id = m.id
-                            WHERE qm.quest_id = @QuestId";
+                            WHERE qm.quest_id = @QuestId-1";
 
             using var cmd = new NpgsqlCommand(query, connection);
             cmd.Parameters.AddWithValue("QuestId", questId);
@@ -117,6 +118,7 @@ namespace Progress_Brawlhalla.Services
 
             return monsters;
         }
+
 
 
         public async Task<Quest> GetQuestDetailsByQuestId(int questId)
@@ -174,27 +176,31 @@ namespace Progress_Brawlhalla.Services
         }
 
 
-        public async Task<List<CharacterSpell>> GetSpellsForCharacterAsync(int characterId)
+        public async Task<List<Spell>> GetSpellsForCharacterAsync(int characterId)
         {
-            List<CharacterSpell> spells = new List<CharacterSpell>();
+            List<Spell> spells = new List<Spell>();
 
             using var connection = new NpgsqlConnection(ConnectionString);
             await connection.OpenAsync();
 
-            using var cmd = new NpgsqlCommand($"SELECT id, character_id, spell_id, slot, acquired_at, is_active FROM character_spells WHERE character_id = @CharacterId", connection);
+            string query = @"
+                SELECT s.name, s.effect_type 
+                FROM character_spells cs 
+                JOIN spells s ON cs.spell_id = s.id 
+                WHERE cs.character_id = @CharacterId";
+
+            using var cmd = new NpgsqlCommand(query, connection);
             cmd.Parameters.AddWithValue("CharacterId", characterId);
+
             using var reader = await cmd.ExecuteReaderAsync();
 
             while (await reader.ReadAsync())
             {
-                spells.Add(new CharacterSpell
+                spells.Add(new Spell
                 {
                     Id = reader.GetInt32(0),
-                    CharacterId = reader.GetInt32(1),
-                    SpellId = reader.GetInt32(2),
-                    Slot = reader.GetString(3),
-                    AcquiredAt = reader.GetDateTime(4),
-                    IsActive = reader.GetBoolean(5)
+                    Name = reader.GetString(1),
+                    EffectType = reader.GetString(2),
                 });
             }
 

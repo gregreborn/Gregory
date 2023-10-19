@@ -11,9 +11,9 @@ public interface IGameService
     Task<List<CharacterEquipment>> GetEquipmentForCharacterAsync(int characterId);
     Task<List<CharacterQuest>> GetQuestsForCharacterAsync(int characterId);
     Task<Quest> GetQuestDetailsByQuestId(int characterId);
-    Task<List<CharacterSpell>> GetSpellsForCharacterAsync(int characterId);
+    Task<List<Spell>> GetSpellsForCharacterAsync(int characterId);
     Task<List<QuestMonsters>> GetMonstersForQuestAsync(int questId);
-    Task<List<Monster>> GetListMonstersForQuestAsync(int questId);
+    Task<List<Monster>> GetListMonstersForTempQuestAsync(int questId);
     Task<Tuple<string, int?>> StartQuestAsync(int characterId);
     string ProvideQuestFeedback(string combatResult);
     Task<ObservableCollection<string>> RunQuestSimulationAsync(Character character, int iterations = 5);

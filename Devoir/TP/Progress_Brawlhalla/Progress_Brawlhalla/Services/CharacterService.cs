@@ -48,33 +48,65 @@ namespace Progress_Brawlhalla.Services
 
             return characters;
         }
-
-        /*public List<CharacterEquipment> GetCharacterEquipmentById(int characterId)
+        
+        public void AddCharacter(Character character)
         {
-            List<CharacterEquipment> characterEquipmentList = new List<CharacterEquipment>();
-
             using var connection = new NpgsqlConnection(ConnectionString);
             connection.Open();
 
-            using var cmd = new NpgsqlCommand("SELECT id, character_id, equipment_id, slot, category FROM character_equipment WHERE character_id = @CharacterId", connection);
-            cmd.Parameters.AddWithValue("CharacterId", characterId);
-            using var reader = cmd.ExecuteReader();
+            int hp = 10, maxHp = 10, mp = 10, maxMp = 10, strength = 10, dexterity = 10;
 
-            while (reader.Read())
+            switch (character.Class)
             {
-                CharacterEquipment characterEquipment = new CharacterEquipment()
-                {
-                    Id = reader.GetInt32(0),
-                    CharacterId = reader.GetInt32(1),
-                    EquipmentId = reader.GetInt32(2),
-                    Slot = reader.GetString(3),
-                    Category = reader.GetString(4)
-                };
-                characterEquipmentList.Add(characterEquipment);
+                case "Gold Knight":
+                    strength = 10;
+                    dexterity = 10;
+                    hp = 15;
+                    maxHp = 15;
+                    mp = 10;
+                    maxMp = 10;
+                    break;
+                case "Speedster":
+                    strength = 10;
+                    dexterity = 15;
+                    hp = 10;
+                    maxHp = 10;
+                    mp = 10;
+                    maxMp = 10;
+                    break;
+                case "Mage":
+                    strength = 10;
+                    dexterity = 10;
+                    hp = 10;
+                    maxHp = 10;
+                    mp = 15;
+                    maxMp = 15;
+                    break;
+                case "Org":
+                    strength = 15;
+                    dexterity = 10;
+                    hp = 10;
+                    maxHp = 10;
+                    mp = 15;
+                    maxMp = 15;
+                    break;
             }
 
-            return characterEquipmentList;
-        }*/
+            using var cmd = new NpgsqlCommand(@"INSERT INTO characters(name, class, level, experience, hp, mp, strength, dexterity, money, max_hp, max_mp) VALUES (@Name, @Class, 1, 0, @Hp, @Mp, @Strength, @Dexterity, 500, @MaxHp, @MaxMp) RETURNING id;", connection);
+    
+            cmd.Parameters.AddWithValue("Name", character.Name);
+            cmd.Parameters.AddWithValue("Class", character.Class);
+            cmd.Parameters.AddWithValue("Hp", hp);
+            cmd.Parameters.AddWithValue("Mp", mp);
+            cmd.Parameters.AddWithValue("Strength", strength);
+            cmd.Parameters.AddWithValue("Dexterity", dexterity);
+            cmd.Parameters.AddWithValue("MaxHp", maxHp);
+            cmd.Parameters.AddWithValue("MaxMp", maxMp);
+
+            character.Id = (int)cmd.ExecuteScalar();
+        }
+
+
         
         public List<CharacterEquipment> GetCharacterEquipmentsById(int characterId)
         {

@@ -18,18 +18,30 @@ public partial class MainWindow : Window
     }
     private void StartGameButton_Click(object sender, RoutedEventArgs e)
     {
-        var selectedCharacter = (Character)((MainWindowViewModel)DataContext).SelectedCharacter;
-        var gameService = new GameService();
+        var viewModel = DataContext as MainWindowViewModel;
+    
+        if (viewModel != null && viewModel.SelectedCharacter != null)
+        {
+            // Pass the selected character's ID to the SimulationWindow constructor
+            var simulationWindow = new SimulationWindow(viewModel.SelectedCharacter.Id.ToString());
+            
+            
+            simulationWindow.Show();
+            
+            viewModel.SimulationVM.StartSimulationCommand.Execute(null);
 
-        var resultMessage = gameService.StartQuestAsync(selectedCharacter.Id);
-
-        // Open the new SimulationWindow and pass the result message to it.
-        // If SimulationWindow has a constructor that accepts a message, you can pass it there.
-        var simulationWindow = new SimulationWindow(resultMessage.ToString());
-        simulationWindow.Show();
+        }
 
         // Optionally close the MainWindow if you want the simulation to take over completely
         this.Close();
     }
 
+    private void AddCharacterButton_Click(object sender, RoutedEventArgs e)
+    {
+        var viewModel = DataContext as MainWindowViewModel;
+        if (viewModel != null)
+        {
+            viewModel.AddCharacterCommand.Execute(null);
+        }
+    }
 }

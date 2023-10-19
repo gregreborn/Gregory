@@ -10,28 +10,32 @@ namespace Progress_Brawlhalla.Views
 {
     public partial class SimulationWindow : Window
     {
-        public SimulationWindow()
+        
+        public SimulationWindow(string characterIdStr)
         {
             InitializeComponent();
+
+            int characterId = int.TryParse(characterIdStr, out int result) ? result : 0;
 
             // Provide both services to the ViewModel
             var gameService = new GameService();
             var characterService = new CharacterService();
             DataContext = new SimulationWindowViewModel(gameService, characterService);
 
+            // If the parsing was successful, set the CharacterId
+            if (characterId > 0)
+            {
+                (DataContext as SimulationWindowViewModel).CharacterId = characterId;
+            }
+
+            (DataContext as SimulationWindowViewModel).StartSimulation(null);
+
             #if DEBUG
             this.AttachDevTools();
             #endif
         }
-        public SimulationWindow(string initialMessage)
-        {
-            DataContext = new SimulationWindowViewModel(new GameService(), new CharacterService());
-            InitializeComponent();
-            
-    
-            // Now, you can set this message somewhere in your ViewModel or display it in some TextBlock in your SimulationWindow. 
-            // This depends on how you want to handle this initialMessage in your simulation.
-        }
+
+
 
 
 

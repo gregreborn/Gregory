@@ -1,7 +1,6 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Progress_Brawlhalla.Services;
 using Progress_Brawlhalla.ViewModels;
 using Progress_Brawlhalla.Views;
 
@@ -18,9 +17,9 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new SimulationWindow()
+            desktop.MainWindow = new MainWindow
             {
-                DataContext = new SimulationWindowViewModel(new GameService(), new CharacterService()),
+                DataContext = new MainWindowViewModel(),
             };
         }
 

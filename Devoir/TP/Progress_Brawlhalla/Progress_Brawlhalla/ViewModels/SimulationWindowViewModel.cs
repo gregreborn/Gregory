@@ -23,6 +23,7 @@ public class SimulationWindowViewModel : INotifyPropertyChanged
     
     private ObservableCollection<CharacterQuest> _characterQuests = new ObservableCollection<CharacterQuest>();
     private ObservableCollection<Monster> _questMonsters = new ObservableCollection<Monster>();
+    private ObservableCollection<Spell> _characterSpell = new ObservableCollection<Spell>();
     private string _questDescription;
     private int _rewardMoney;
     private int _rewardExperience;
@@ -133,6 +134,8 @@ public class SimulationWindowViewModel : INotifyPropertyChanged
         _characterService = characterService;
         InitializeAllQuests();
     }
+
+
     
     private async void InitializeAllQuests()
     {
@@ -173,7 +176,16 @@ public class SimulationWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    
+    public ObservableCollection<Spell> CharacterSpells
+    {
+        get => _characterSpell;
+        set
+        {
+            _characterSpell = value;
+            OnPropertyChanged(nameof(CharacterSpells));
+        }
+    }
+
 
     public int CharacterId
     {
@@ -230,7 +242,7 @@ public class SimulationWindowViewModel : INotifyPropertyChanged
 
     public ICommand StartSimulationCommand => new RelayCommand(StartSimulation);
 
-    private async void StartSimulation(object obj)
+    public async void StartSimulation(object obj)
     {
         if (_characterId <= 0)
         {
@@ -282,11 +294,17 @@ public class SimulationWindowViewModel : INotifyPropertyChanged
                 EquipmentRewardId = questDetails.Id;
                 RewardExperience = questDetails.RewardExperience;
                 
-                var monstersForQuest = await _gameService.GetListMonstersForQuestAsync(currentQuest.QuestId);
+                var monstersForQuest = await _gameService.GetListMonstersForTempQuestAsync(currentQuest.QuestId);
                 QuestMonstersList.Clear();
                 foreach (var monster in monstersForQuest)
                 {
                     QuestMonstersList.Add(monster);
+                }
+
+                var characterSpells = await _gameService.GetSpellsForCharacterAsync(_characterId);
+                foreach (var spell in CharacterSpells)
+                {
+                    CharacterSpells.Add(spell);
                 }
             }
             else

@@ -12,6 +12,22 @@
     
     
     <Grid RowDefinitions="*,*,*" ColumnDefinitions="*,*">
+        <!-- Name Input TextBox -->
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="10">
+            <TextBlock Text="Enter Character Name:" FontWeight="Bold" Foreground="Black"/>
+            <TextBox Name="CharacterNameTextBox" Margin="0,5,0,0" Text="{Binding CharacterName}" />
+        </StackPanel>
+        
+        <!-- Character Class Radio Buttons -->
+        <StackPanel Grid.Row="0" Grid.Column="1" Margin="10">
+            <TextBlock Text="Select Character Class:" FontWeight="Bold" Foreground="Black"/>
+            <RadioButton Content="Gold Knight" GroupName="CharacterClass" IsChecked="{Binding IsGoldKnightSelected}"/>
+            <RadioButton Content="Speedster" GroupName="CharacterClass" IsChecked="{Binding IsSpeedsterSelected}"/>
+            <RadioButton Content="Mage" GroupName="CharacterClass" IsChecked="{Binding IsMageSelected}"/>
+            <RadioButton Content="Org" GroupName="CharacterClass" IsChecked="{Binding IsOrgSelected}"/>
+
+            <Button Content="Add" Margin="0,20,0,0" Background="Green" Foreground="White" BorderThickness="0" Padding="10,5" FontSize="18" Click="AddCharacterButton_Click" />
+        </StackPanel>
         <!-- Character List -->
         <ListBox Name="CharacterList" Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Characters}" SelectedItem="{Binding SelectedCharacter}">
             <ListBox.ItemTemplate>
