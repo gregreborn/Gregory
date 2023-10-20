@@ -5394,11 +5394,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gregreborn\\RiderProjects\\Progress_Brawlhalla\\Progress_Brawlhalla\\Progress_Brawlhalla.csproj",
+      "projectUniqueName": "C:\\Users\\Gregreborn\\Documents\\GitHub\\Gregory\\Devoir\\TP\\Progress_Brawlhalla\\Progress_Brawlhalla\\Progress_Brawlhalla.csproj",
       "projectName": "Progress_Brawlhalla",
-      "projectPath": "C:\\Users\\Gregreborn\\RiderProjects\\Progress_Brawlhalla\\Progress_Brawlhalla\\Progress_Brawlhalla.csproj",
+      "projectPath": "C:\\Users\\Gregreborn\\Documents\\GitHub\\Gregory\\Devoir\\TP\\Progress_Brawlhalla\\Progress_Brawlhalla\\Progress_Brawlhalla.csproj",
       "packagesPath": "C:\\Users\\Gregreborn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Gregreborn\\RiderProjects\\Progress_Brawlhalla\\Progress_Brawlhalla\\obj\\",
+      "outputPath": "C:\\Users\\Gregreborn\\Documents\\GitHub\\Gregory\\Devoir\\TP\\Progress_Brawlhalla\\Progress_Brawlhalla\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Gregreborn\\AppData\\Roaming\\NuGet\\NuGet.Config",

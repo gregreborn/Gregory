@@ -13,13 +13,13 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Progress_Brawlhalla
-build_property.ProjectDir = C:\Users\Gregreborn\RiderProjects\Progress_Brawlhalla\Progress_Brawlhalla\
+build_property.ProjectDir = C:\Users\Gregreborn\Documents\GitHub\Gregory\Devoir\TP\Progress_Brawlhalla\Progress_Brawlhalla\
 
-[C:/Users/Gregreborn/RiderProjects/Progress_Brawlhalla/Progress_Brawlhalla/App.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP/Progress_Brawlhalla/Progress_Brawlhalla/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/Progress_Brawlhalla/Progress_Brawlhalla/Views/MainWindow.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP/Progress_Brawlhalla/Progress_Brawlhalla/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/Progress_Brawlhalla/Progress_Brawlhalla/Views/SimulationWindow.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP/Progress_Brawlhalla/Progress_Brawlhalla/Views/SimulationWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

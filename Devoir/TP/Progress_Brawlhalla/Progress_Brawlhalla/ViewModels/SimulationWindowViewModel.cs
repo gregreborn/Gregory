@@ -350,7 +350,6 @@ public class SimulationWindowViewModel : INotifyPropertyChanged
 
                     // Fetch updated character details after this quest
                     SelectedCharacter = _characterService.GetCharacterById(_characterId);
-                    // Assuming you have a method in your service to get equipments by character ID.
                     var equipments = _characterService.GetCharacterEquipmentsById(_characterId);
     
                     // Update the ObservableCollection property.

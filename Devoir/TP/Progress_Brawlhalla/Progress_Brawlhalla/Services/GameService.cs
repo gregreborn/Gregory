@@ -89,9 +89,7 @@ namespace Progress_Brawlhalla.Services
 
             using var connection = new NpgsqlConnection(ConnectionString);
             await connection.OpenAsync();
-
-            // We will join the TempMonsters table and the Monster table on MonsterId
-            // Update the JOIN clause to fetch from the quest_temp_monsters table
+            
             string query = @"
                             SELECT m.id, m.type, m.rank, m.base_hp, m.base_strength 
                             FROM quest_temp_monsters qm
@@ -359,68 +357,68 @@ namespace Progress_Brawlhalla.Services
             return feedbacks;
         }
 
-public async Task<ObservableCollection<string>> RunQuestSimulationAsync(Character character, int iterations = 5)
-{
-    var feedbacks = new ObservableCollection<string>();
-
-    // Check if the character already has quests. If not, generate the first quest.
-    var existingQuests = await GetQuestsForCharacterAsync(character.Id);
-    if (!existingQuests.Any())
+    public async Task<ObservableCollection<string>> RunQuestSimulationAsync(Character character, int iterations = 5)
     {
-        var startQuestResult = await StartQuestAsync(character.Id);
-        feedbacks.Add(startQuestResult.Item1);
-        int? assignedQuestId = startQuestResult.Item2;
+        var feedbacks = new ObservableCollection<string>();
 
-        if (!assignedQuestId.HasValue)
+        // Check if the character already has quests. If not, generate the first quest.
+        var existingQuests = await GetQuestsForCharacterAsync(character.Id);
+        if (!existingQuests.Any())
         {
-            feedbacks.Add("No quest was assigned.");
-            return feedbacks;
+            var startQuestResult = await StartQuestAsync(character.Id);
+            feedbacks.Add(startQuestResult.Item1);
+            int? assignedQuestId = startQuestResult.Item2;
+
+            if (!assignedQuestId.HasValue)
+            {
+                feedbacks.Add("No quest was assigned.");
+                return feedbacks;
+            }
+
+            feedbacks.Add("Assigned Quest ID: " + assignedQuestId.Value);
         }
 
-        feedbacks.Add("Assigned Quest ID: " + assignedQuestId.Value);
+        for (int i = 0; i < iterations; i++)
+        {
+            feedbacks.Add("--- Quest " + (i + 1).ToString() + " ---");
+
+            // Re-fetch the quests to ensure the most recent one is considered.
+            existingQuests = await GetQuestsForCharacterAsync(character.Id);
+            var latestQuest = existingQuests.OrderByDescending(q => q.Id).FirstOrDefault();
+            if (latestQuest == null)
+            {
+                feedbacks.Add("No quest available. Generating a new one.");
+                continue;  // Skip the current iteration if there's no quest.
+            }
+
+            // Getting feedback
+            var combatResults = await GetCombatFeedbackMessagesAsync(character.Id, latestQuest.QuestId);
+            foreach (var feedbackMessage in combatResults)
+            {
+                feedbacks.Add(ProvideQuestFeedback(feedbackMessage));
+            }
+
+            if (feedbacks.Last().Contains("All monsters defeated"))
+            {
+                feedbacks.Add(await AwardAndCompleteQuest(character.Id));
+                feedbacks.Add(await EquipBetterItem(character.Id));
+
+                // Fetch the updated character details and replace the local character object.
+                character = new CharacterService().GetCharacterById(character.Id);
+
+                feedbacks.Add(await CheckAndLevelUp(character.Id));
+            }
+            else if (feedbacks.Last().Contains("Failed to defeat"))
+            {
+                feedbacks.Add(PenaltyForFailure(character.Id));
+                feedbacks.Add(CheckAndLevelDown(character.Id));
+            }
+
+            await Task.Delay(2000); // Wait for 1 second
+        }
+
+        return feedbacks;
     }
-
-    for (int i = 0; i < iterations; i++)
-    {
-        feedbacks.Add("--- Quest " + (i + 1).ToString() + " ---");
-
-        // Re-fetch the quests to ensure the most recent one is considered.
-        existingQuests = await GetQuestsForCharacterAsync(character.Id);
-        var latestQuest = existingQuests.OrderByDescending(q => q.Id).FirstOrDefault();
-        if (latestQuest == null)
-        {
-            feedbacks.Add("No quest available. Generating a new one.");
-            continue;  // Skip the current iteration if there's no quest.
-        }
-
-        // Getting feedback
-        var combatResults = await GetCombatFeedbackMessagesAsync(character.Id, latestQuest.QuestId);
-        foreach (var feedbackMessage in combatResults)
-        {
-            feedbacks.Add(ProvideQuestFeedback(feedbackMessage));
-        }
-
-        if (feedbacks.Last().Contains("All monsters defeated"))
-        {
-            feedbacks.Add(await AwardAndCompleteQuest(character.Id));
-            feedbacks.Add(await EquipBetterItem(character.Id));
-
-            // Fetch the updated character details and replace the local character object.
-            character = new CharacterService().GetCharacterById(character.Id);
-
-            feedbacks.Add(await CheckAndLevelUp(character.Id));
-        }
-        else if (feedbacks.Last().Contains("Failed to defeat"))
-        {
-            feedbacks.Add(PenaltyForFailure(character.Id));
-            feedbacks.Add(CheckAndLevelDown(character.Id));
-        }
-
-        await Task.Delay(2000); // Wait for 1 second
-    }
-
-    return feedbacks;
-}
 
 
 

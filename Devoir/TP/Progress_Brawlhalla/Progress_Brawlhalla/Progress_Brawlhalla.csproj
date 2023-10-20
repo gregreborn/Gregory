@@ -38,9 +38,4 @@
     <ItemGroup>
       <None Remove="Animations\Fait-idle.png" />
     </ItemGroup>
-
-
-    <ItemGroup>
-      <Resource Include="Animations\Fait-idle.png" />
-    </ItemGroup>
 </Project>

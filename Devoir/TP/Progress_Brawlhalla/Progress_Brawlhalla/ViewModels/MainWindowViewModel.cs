@@ -48,7 +48,7 @@ namespace Progress_Brawlhalla.ViewModels
 
         public ObservableCollection<Character> Characters { get; set; }
 
-        public SimulationWindowViewModel SimulationVM { get; set; } // Add this line
+        public SimulationWindowViewModel SimulationVM { get; set; } 
         public string CharacterName
         {
             get => _characterName;

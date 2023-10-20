@@ -123,8 +123,8 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid ColumnDefinitions="*,*">
-                                            <TextBlock Text="{Binding Name}" Grid.Column="0"/> <!-- Assuming each monster has a Name property -->
-                                            <TextBlock Text="{Binding EffectType}" Grid.Column="1"/> <!-- Assuming each monster has a Rank property -->
+                                            <TextBlock Text="{Binding Name}" Grid.Column="0"/> 
+                                            <TextBlock Text="{Binding EffectType}" Grid.Column="1"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
@@ -178,8 +178,8 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Grid ColumnDefinitions="*,*">
-                                                <TextBlock Text="{Binding Type}" Grid.Column="0"/> <!-- Assuming each monster has a Name property -->
-                                                <TextBlock Text="{Binding Rank}" Grid.Column="1"/> <!-- Assuming each monster has a Rank property -->
+                                                <TextBlock Text="{Binding Type}" Grid.Column="0"/>
+                                                <TextBlock Text="{Binding Rank}" Grid.Column="1"/>
                                             </Grid>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
@@ -207,7 +207,6 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid ColumnDefinitions="*,*">
-                                            <!-- Assuming you have properties named ID and Status in your quest objects -->
                                             <TextBlock Text="{Binding QuestId}" Grid.Column="0"/>
                                             <TextBlock Text="{Binding Status}" Grid.Column="1"/>
                                         </Grid>
@@ -220,7 +219,6 @@
                                  Maximum="100" 
                                  Value="{Binding OverallProgressValue}" Height="20"/>
                 </StackPanel>
-                <!-- Add this just before the closing </Grid> tag in SimulationWindow.axaml -->
                 <TextBlock Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" 
                            Text="{Binding FeedbackMessages[0]}" 
                            VerticalAlignment="Stretch" 

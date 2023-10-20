@@ -32,7 +32,6 @@ public partial class MainWindow : Window
 
         }
 
-        // Optionally close the MainWindow if you want the simulation to take over completely
         this.Close();
     }
 

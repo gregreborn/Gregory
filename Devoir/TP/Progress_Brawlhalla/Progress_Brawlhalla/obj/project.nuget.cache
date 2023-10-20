@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ii/l0kLFNev3KUHaO2BTlAUnq13W+Q7WyDrkU5bd7O1RKm16+Hy0x8V3Bwnmvlp7URg/SdAxAMAA2gym8YrkHg==",
+  "dgSpecHash": "8HtBgmko+5eBBcLcEu9nN2RzyvD+rpCO49/c7+I+lGOjezoPHRfpu5L/TFm3ZfY4Fc5YIyQiRyFHcZ8F50/7dQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Gregreborn\\RiderProjects\\Progress_Brawlhalla\\Progress_Brawlhalla\\Progress_Brawlhalla.csproj",
+  "projectFilePath": "C:\\Users\\Gregreborn\\Documents\\GitHub\\Gregory\\Devoir\\TP\\Progress_Brawlhalla\\Progress_Brawlhalla\\Progress_Brawlhalla.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Gregreborn\\.nuget\\packages\\avalonia\\11.0.2\\avalonia.11.0.2.nupkg.sha512",
     "C:\\Users\\Gregreborn\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.0.2023020321\\avalonia.angle.windows.natives.2.1.0.2023020321.nupkg.sha512",
