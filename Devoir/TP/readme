@@ -1,1 +1,26 @@
 
+Guide d'installation de la base de données pour le projet Avalonia Rider
+
+Configuration de la base de données:
+
+Localisez le dossier Config dans le projet Avalonia Rider.
+Remplacez les valeurs suivantes dans le fichier de configuration :
+Hôte : localhost
+Mot de passe : 1234
+Nom de la base de données : Progress_brawlhalla.
+Création de la base de données:
+
+Créez une base de données avec le nom Progress_brawlhalla.
+Exécution du script SQL:
+
+Faites un clic droit sur la base de données que vous venez de créer.
+Sélectionnez Query Tool (outil de requête).
+Appuyez sur ALT+O.
+Sélectionnez le dossier script où se trouve le script SQL à exécuter.
+Appuyez sur CTRL+A pour sélectionner tout le contenu du script.
+Exécutez le script.
+Peupler la base de données:
+
+Faites un clic droit à nouveau sur la base de données.
+Ouvrez l'outil de requête (Query Tool).
+Utilisez les fonctions de remplissage pour peupler les tables nécessaires.
