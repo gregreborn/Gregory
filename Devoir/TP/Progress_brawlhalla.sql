@@ -5,7 +5,7 @@
 -- Dumped from database version 15.4
 -- Dumped by pg_dump version 15.4
 
--- Started on 2023-10-19 15:43:03
+-- Started on 2023-10-20 06:47:41
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -243,7 +243,7 @@ $$;
 ALTER FUNCTION public.check_and_level_up(character_id integer) OWNER TO postgres;
 
 --
--- TOC entry 256 (class 1255 OID 33468)
+-- TOC entry 255 (class 1255 OID 33468)
 -- Name: combat(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -336,7 +336,7 @@ $$;
 ALTER FUNCTION public.combat(char_id integer, monster_id integer) OWNER TO postgres;
 
 --
--- TOC entry 259 (class 1255 OID 33466)
+-- TOC entry 262 (class 1255 OID 33466)
 -- Name: complete_quest_with_combat(integer, integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -676,7 +676,7 @@ END;$$;
 ALTER FUNCTION public.generate_and_assign_quest(character_id_param integer) OWNER TO postgres;
 
 --
--- TOC entry 255 (class 1255 OID 33492)
+-- TOC entry 256 (class 1255 OID 33492)
 -- Name: penalty_for_failure(integer); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -685,11 +685,13 @@ CREATE FUNCTION public.penalty_for_failure(character_id_param integer) RETURNS T
     AS $$DECLARE
     char_exp INT;
     char_money DECIMAL(10,2);
+	char_strength INT;
     base_exp_penalty INT;
     base_money_penalty DECIMAL(10,2);
+	base_strength_help INT;
 BEGIN
     -- Fetch the current experience and money of the character
-    SELECT experience, money INTO char_exp, char_money
+    SELECT experience, money, strength INTO char_exp, char_money, char_strength
     FROM characters 
     WHERE id = character_id_param;
 
@@ -699,10 +701,14 @@ BEGIN
     -- Calculate money penalty as 10% of the character's current money
     base_money_penalty := char_money * 0.1; 
 
+	-- Calculate money penalty as 10% of the character's current money
+    base_strength_help := char_strength + 2; 
+	
     -- Update the character's experience and money with the penalties
     UPDATE characters
     SET experience = char_exp - base_exp_penalty,
-        money = char_money - base_money_penalty
+        money = char_money - base_money_penalty,
+		strength =  base_strength_help
     WHERE id = character_id_param;
 
     -- Call the check and level down function, if the character's experience drops
@@ -716,7 +722,7 @@ $$;
 ALTER FUNCTION public.penalty_for_failure(character_id_param integer) OWNER TO postgres;
 
 --
--- TOC entry 262 (class 1255 OID 42168)
+-- TOC entry 261 (class 1255 OID 42168)
 -- Name: populate_characters(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -726,10 +732,10 @@ CREATE FUNCTION public.populate_characters() RETURNS void
 BEGIN
     INSERT INTO characters (id, name, class, level, experience, hp, mp, strength, dexterity, money, max_hp, max_mp)
     VALUES 
-        (15, 'Orion', 'Gold Knight', 1, 0, 15, 10, 10, 10, 10, 500, 15),
+        (15, 'Orion', 'Gold Knight', 1, 0, 15, 10, 10, 10, 500, 15, 10),
         (16, 'Fait', 'Speedster', 1, 0, 10, 10, 10, 15, 500, 10, 10),
         (17, 'Thea', 'Mage', 1, 0, 10, 15, 10, 10, 500, 10, 15),
-        (14, 'Xull', 'Org', 1, 50, 22, 11, 20, 10, 759, 22, 11);
+        (14, 'Xull', 'Org', 1, 0, 10, 10, 15, 10, 500, 10, 10);
 END;
 $$;
 
@@ -737,42 +743,56 @@ $$;
 ALTER FUNCTION public.populate_characters() OWNER TO postgres;
 
 --
--- TOC entry 261 (class 1255 OID 42167)
+-- TOC entry 260 (class 1255 OID 42167)
 -- Name: populate_equipment(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
 CREATE FUNCTION public.populate_equipment() RETURNS void
     LANGUAGE plpgsql
-    AS $$
-DECLARE
-    weapons text[] := ARRAY['Sword', 'Hammer', 'Spear', 'Blaster', 'Canon',
-                            'Lance','Katar','Bow','Gauntlets','Boots'];
+    AS $$DECLARE
+    itemNames text[] := ARRAY[
+        'Steel Sword', 'Mithril Hammer', 'Ebonwood Spear', 'Laser Blaster', 'Plasma Canon', 
+        'Golden Lance', 'Shadow Katar', 'Elven Bow', 'Diamond Gauntlets', 
+        'Mithril Armour', 'Dragonhide Armour', 'Elven Armour', 
+        'Silver Boots', 'Swiftstride Boots', 'Shadowstep Boots',
+        'Steel Helmet', 'Dragon Crest Helmet', 'Mystic Crown'
+    ];
+    itemCategories text[] := ARRAY[
+        'weapon', 'weapon', 'weapon', 'weapon', 'weapon', 
+        'weapon', 'weapon', 'weapon', 'weapon', 
+        'armour', 'armour', 'armour',
+        'boots', 'boots', 'boots',
+        'helmet', 'helmet', 'helmet'
+    ];
     variant text;
     condition text;
     statBonus integer;
+    itemName text;
+    itemCategory text;
 BEGIN
     FOREACH variant IN ARRAY ARRAY['Val', 'Bodvar', 'Koji','Xull','Ulgrim',
-                                   'Orion','Kaya','Lord Vraxx','Lucien',
-                             'Ada' ] 
+                                   'Orion','Kaya','Lord Vraxx','Lucien', 'Ada' ] 
     LOOP
-        -- Determine condition and stat bonus
-        IF RANDOM() < 0.33 THEN 
-            condition := 'Worn';
-            statBonus := (RANDOM() * 5)::INTEGER; -- Random bonus between 0 and 5
-        ELSIF RANDOM() < 0.66 THEN 
-            condition := 'Classic';
-            statBonus := (RANDOM() * 5 + 5)::INTEGER; -- Random bonus between 5 and 10
-        ELSE 
-            condition := 'Polished';
-            statBonus := (RANDOM() * 5 + 10)::INTEGER; -- Random bonus between 10 and 15
-        END IF;
-        
-        -- Insert values
-        INSERT INTO equipment (type, material, condition, price, stat_bonus)
-        SELECT weapon, variant, condition,
-               (RANDOM() * 20 + 10)::INTEGER,  -- Random price between 10 and 30
-               statBonus
-        FROM unnest(weapons) AS weapon;
+        FOR i IN 1..ARRAY_LENGTH(itemNames, 1) LOOP
+            itemName := itemNames[i];
+            itemCategory := itemCategories[i];
+
+            -- Determine condition and stat bonus
+            IF RANDOM() < 0.33 THEN 
+                condition := 'Worn';
+                statBonus := (RANDOM() * 5)::INTEGER; -- Random bonus between 0 and 5
+            ELSIF RANDOM() < 0.66 THEN 
+                condition := 'Classic';
+                statBonus := (RANDOM() * 5 + 5)::INTEGER; -- Random bonus between 5 and 10
+            ELSE 
+                condition := 'Polished';
+                statBonus := (RANDOM() * 5 + 10)::INTEGER; -- Random bonus between 10 and 15
+            END IF;
+
+            -- Insert values
+            INSERT INTO equipment (category, type, material, condition, price, stat_bonus)
+            VALUES (itemCategory, itemName, variant, condition, (RANDOM() * 20 + 10)::INTEGER, statBonus);
+        END LOOP;
     END LOOP;
 END;
 $$;
@@ -781,35 +801,49 @@ $$;
 ALTER FUNCTION public.populate_equipment() OWNER TO postgres;
 
 --
--- TOC entry 260 (class 1255 OID 42166)
+-- TOC entry 259 (class 1255 OID 42166)
 -- Name: populate_monsters(); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
 CREATE FUNCTION public.populate_monsters() RETURNS void
     LANGUAGE plpgsql
-    AS $$
-DECLARE
+    AS $$DECLARE
     fighters text[] := ARRAY['Val', 'Bodvar', 'Koji', 'Diana', 'Wu Shang',
 							 'Xull','Ulgrim','Orion','Kaya','Lord Vraxx','Lucien',
 							 'Ada','Asuri','Azoth','Barraza','Brynn','Scarlet','Sir Roland',
-							'Teros','Ember','Thatch','Hattori','Gnash','Queen Nai','Artemis']; 
+							 'Teros','Ember','Thatch','Hattori','Gnash','Queen Nai','Artemis']; 
     rank text;
+    fighterName text;
 BEGIN
     FOREACH rank IN ARRAY ARRAY['Novice', 'Champion', 'Boss']
     LOOP
-        INSERT INTO monsters (type, rank, base_hp, base_strength) 
-        SELECT 
-            fighter, 
-            rank, 
-            CASE
-                WHEN rank = 'Boss' THEN (RANDOM() * 5 + 50)::INTEGER  -- Random HP between 50 and 55 for Boss
-                ELSE (RANDOM() * 10 + 10)::INTEGER  -- Random HP between 10 and 20 for others
-            END,
-            CASE
-                WHEN rank = 'Boss' THEN (RANDOM() * 5 + 15)::INTEGER  -- Random strength between 15 and 20 for Boss
-                ELSE (RANDOM() * 5 + 5)::INTEGER  -- Random strength between 5 and 10 for others
-            END
-        FROM unnest(fighters) AS fighter;
+        FOR i IN 1..ARRAY_LENGTH(fighters, 1) LOOP
+            fighterName := fighters[i];
+            
+            -- If rank is 'Boss', prepend 'Lord' or 'Master' before the name.
+            IF rank = 'Boss' THEN
+                IF RANDOM() < 0.5 THEN
+                    fighterName := 'Lord ' || fighterName;
+                ELSE
+                    fighterName := 'Master ' || fighterName;
+                END IF;
+            END IF;
+            
+            -- Insert values
+            INSERT INTO monsters (type, rank, base_hp, base_strength) 
+            VALUES (
+                fighterName, 
+                rank, 
+                CASE
+                    WHEN rank = 'Boss' THEN (RANDOM() * 5 + 50)::INTEGER  -- Random HP between 50 and 55 for Boss
+                    ELSE (RANDOM() * 10 + 10)::INTEGER  -- Random HP between 10 and 20 for others
+                END,
+                CASE
+                    WHEN rank = 'Boss' THEN (RANDOM() * 5 + 15)::INTEGER  -- Random strength between 15 and 20 for Boss
+                    ELSE (RANDOM() * 5 + 5)::INTEGER  -- Random strength between 5 and 10 for others
+                END
+            );
+        END LOOP;
     END LOOP;
 END;
 $$;
@@ -1538,7 +1572,7 @@ ALTER TABLE ONLY public.quests
     ADD CONSTRAINT quests_equipment_reward_id_fkey FOREIGN KEY (equipment_reward_id) REFERENCES public.equipment(id);
 
 
--- Completed on 2023-10-19 15:43:03
+-- Completed on 2023-10-20 06:47:42
 
 --
 -- PostgreSQL database dump complete
