@@ -14,6 +14,6 @@ namespace Progress_Brawlhalla.Models
         public int Mp { get; set; }
         public int Hp { get; set; }
         public int MaxHp { get; set; }
-        public int MaxMp { get; set; }
+        public int MaxMp { get; set; } 
     }
 }

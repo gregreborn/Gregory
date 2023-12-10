@@ -14,6 +14,8 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Progress_Brawlhalla
 build_property.ProjectDir = C:\Users\Gregreborn\Documents\GitHub\Gregory\Devoir\TP\Progress_Brawlhalla\Progress_Brawlhalla\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
 
 [C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP/Progress_Brawlhalla/Progress_Brawlhalla/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
