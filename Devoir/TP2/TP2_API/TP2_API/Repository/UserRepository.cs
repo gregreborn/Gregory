@@ -128,12 +128,21 @@ public class UserRepository
              return DeleteUserResult.NotAuthorized;
          }
 
-         var userToDelete = await _context.Users.FindAsync(userId);
+         var userToDelete = await _context.Users
+             .Where(u => u.UserId == userId)
+             .AsNoTracking()
+             .FirstOrDefaultAsync();
          if (userToDelete == null)
          {
              return DeleteUserResult.UserNotFound;
          }
 
+         
+         // Check if the user has been inactive for 7 days
+         if ((DateTime.UtcNow - userToDelete.LastLoginDate).TotalDays < 7)
+         {
+             return DeleteUserResult.NotInactiveLongEnough;
+         }
          await RevokeSelectPrivileges(userToDelete.PostgresUsername);
 
          _context.Users.Remove(userToDelete);
