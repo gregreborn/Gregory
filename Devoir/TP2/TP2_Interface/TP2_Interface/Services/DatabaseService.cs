@@ -49,13 +49,11 @@ public class DatabaseService
         using (var connection = new NpgsqlConnection(_connectionString))
         {
             await connection.OpenAsync();
-            // Use the LOWER function to make the search case-insensitive
             using (var command = new NpgsqlCommand(@"SELECT * FROM connaissance 
                                                  WHERE LOWER(titre) LIKE @query 
                                                  OR LOWER(description) LIKE @query 
                                                  OR champs::text LIKE @query", connection))
             {
-                // Use lower-case search query
                 command.Parameters.AddWithValue("@query", $"%{lowerSearchQuery}%");
 
                 using (var reader = await command.ExecuteReaderAsync())
@@ -67,7 +65,6 @@ public class DatabaseService
                             Id = reader.GetInt32(reader.GetOrdinal("id")),
                             Title = reader.GetString(reader.GetOrdinal("titre")),
                             Description = reader.GetString(reader.GetOrdinal("description")),
-                            // Make sure to handle the JSON data properly
                             JsonFields = reader.GetString(reader.GetOrdinal("champs"))
                         });
                     }
@@ -145,7 +142,6 @@ public class DatabaseService
                 command.Parameters.AddWithValue("@title", entry.Title);
                 command.Parameters.AddWithValue("@description", entry.Description);
             
-                // Explicitly set the type to jsonb for the jsonFields parameter
                 var jsonbParam = new NpgsqlParameter("@jsonFields", NpgsqlDbType.Jsonb) { Value = entry.JsonFields };
                 command.Parameters.Add(jsonbParam);
 

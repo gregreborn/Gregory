@@ -1,11 +1,8 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:TP2_Interface.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:global="clr-namespace:"
         x:Class="TP2_Interface.Views.MainWindow"
-        x:DataType="global:MainWindowViewModel"
+        x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Main Window">
     <Grid>
@@ -16,20 +13,17 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Regular Search Bar -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
             <TextBox Text="{Binding SearchQuery}" Width="200" Watermark="Search..."/>
             <Button Content="Rechercher" Command="{Binding SearchCommand}" Margin="10,0,0,0"/>
         </StackPanel>
 
-        <!-- Advanced Search Bar -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" Margin="10">
             <ComboBox ItemsSource="{Binding SearchableFields}" SelectedItem="{Binding SelectedSearchField}" Width="120"/>
             <TextBox Text="{Binding AdvancedSearchQuery}" Width="200" Watermark="Advanced Search..."/>
             <Button Content="Recherche Avancée" Command="{Binding AdvancedSearchCommand}" Margin="10,0,0,0"/>
         </StackPanel>
 
-        <!-- Knowledge Entries List -->
         <ListBox Grid.Row="2" x:Name="KnowledgeEntriesListBox" ItemsSource="{Binding KnowledgeEntries}" Margin="10">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -41,7 +35,6 @@
             </ListBox.ItemTemplate>
         </ListBox>
         
-        <!-- Admin Actions (Visible only for admins) -->
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10" IsVisible="{Binding IsAdmin}">
             <Button Content="Manage Knowledge" Command="{Binding ManageKnowledgeCommand}" Margin="5,0"/>
             <Button Content="Manage Users" Command="{Binding ManageUsersCommand}" Margin="5,0"/>

@@ -13,7 +13,6 @@
             <TextBlock Text="{Binding SelectedEntry.Title}" FontWeight="Bold" FontSize="18"/>
             <TextBlock Text="{Binding SelectedEntry.Description}" TextWrapping="Wrap"/>
 
-            <!-- Display JSON Fields -->
             <ItemsControl ItemsSource="{Binding JsonFieldsList}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

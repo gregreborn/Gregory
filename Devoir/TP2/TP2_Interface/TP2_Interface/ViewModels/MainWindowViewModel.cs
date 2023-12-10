@@ -7,8 +7,9 @@ using Avalonia.Controls;
 using ReactiveUI;
 using TP2_Interface.Models;
 using TP2_Interface.Services;
-using TP2_Interface.ViewModels;
 using TP2_Interface.Views;
+
+namespace TP2_Interface.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {
@@ -98,7 +99,6 @@ public class MainWindowViewModel : ViewModelBase
         }
         else
         {
-            // Clear the search results
             KnowledgeEntries.Clear();
 
             LoadEntriesAsync();
@@ -122,7 +122,6 @@ public class MainWindowViewModel : ViewModelBase
     private void OpenAdminKnowledgeWindow()
     {
         var adminKnowledgeWindow = new AdminKnowledgeWindow();
-        // Pass the necessary credentials and isAdmin flag to the ViewModel
         adminKnowledgeWindow.DataContext = new AdminKnowledgeViewModel(
             SessionManager.CurrentUser.PostgresUsername, 
             SessionManager.CurrentUser.PostgresPassword,
@@ -144,29 +143,22 @@ public class MainWindowViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            // Handle exceptions, e.g., database access issue
         }
     }
     
     private void Logout()
     {
-        // Clear the session data
         ClearSessionData();
 
-        // Open the login window
         var loginWindow = new LoginWindow();
         loginWindow.Show();
 
-        // Hide the main window instead of closing it
         _mainWindow.Hide();
     }
 
     private void ClearSessionData()
     {
-        // Clear the current user and any other session data
         SessionManager.CurrentUser = null;
     }
-
-
-
+    
 }

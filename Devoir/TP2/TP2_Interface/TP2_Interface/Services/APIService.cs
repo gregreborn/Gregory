@@ -51,15 +51,26 @@ public class APIService
             return JsonConvert.DeserializeObject<List<UserDto>>(responseContent);
         }
 
-        return new List<UserDto>(); // or handle errors as needed
+        return new List<UserDto>(); 
     }
 
     public async Task<bool> DeleteUserAsync(int userId, string requesterUsername)
     {
-        var response = await _httpClient.DeleteAsync($"api/users/{userId}?requesterUsername={requesterUsername}");
+        var requestUri = $"api/users/{userId}";
+        var content = new StringContent(JsonConvert.SerializeObject(requesterUsername), Encoding.UTF8, "application/json");
+        var request = new HttpRequestMessage
+        {
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri(_httpClient.BaseAddress, requestUri),
+            Content = content
+        };
+
+        var response = await _httpClient.SendAsync(request);
         return response.IsSuccessStatusCode;
     }
 
+
+    
 
     public async Task<UserDto> GetUserByIdAsync(int id)
     {

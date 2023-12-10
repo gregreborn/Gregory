@@ -4,7 +4,6 @@ namespace TP2_Interface.Services
     {
         public static User CurrentUser { get; set; }
 
-        // You can add more session-related properties and methods here
     }
 
     public class User

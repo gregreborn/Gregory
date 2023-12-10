@@ -9,7 +9,6 @@
         <TextBox Text="{Binding Title}" Watermark="Title" Margin="0,0,0,10"/>
         <TextBox Text="{Binding Description}" Watermark="Description" Margin="0,0,0,10"/>
 
-        <!-- Editable JSON Fields -->
         <ItemsControl ItemsSource="{Binding EditableJsonFields}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>

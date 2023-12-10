@@ -120,16 +120,34 @@ public class UserRepository
              return DeleteUserResult.UserNotFound;
          }
 
-         if (DateTime.UtcNow - userToDelete.LastLoginDate < TimeSpan.FromDays(7))
-         {
-             return DeleteUserResult.NotInactiveLongEnough;
-         }
+         // Revoke SELECT privileges
+         await RevokeSelectPrivileges(userToDelete.PostgresUsername);
 
          _context.Users.Remove(userToDelete);
          await _context.SaveChangesAsync();
 
+         // Continue with PostgreSQL user deletion
+         await DeletePostgreSQLUser(userToDelete.PostgresUsername);
+
          return DeleteUserResult.Success;
      }
+
+     
+     public async Task RevokeSelectPrivileges(string username)
+     {
+         var safeUsername = username.Replace("'", "''"); // Basic SQL Injection protection
+         var sql = $"REVOKE SELECT ON ALL TABLES IN SCHEMA public FROM \"{safeUsername}\"";
+         await _context.Database.ExecuteSqlRawAsync(sql);
+     }
+
+
+     public async Task DeletePostgreSQLUser(string username)
+     {
+         var usernameParam = new NpgsqlParameter("username", username);
+         await _context.Database.ExecuteSqlRawAsync("CALL admin.delete_restricted_user(@username)", usernameParam);
+     }
+
+
 
 
 }

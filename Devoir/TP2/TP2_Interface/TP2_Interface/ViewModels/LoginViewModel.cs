@@ -2,7 +2,6 @@ using System;
 using System.Net.Http;
 using System.Reactive;
 using ReactiveUI;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using TP2_API.DTOs;
@@ -77,18 +76,15 @@ namespace TP2_Interface.ViewModels
                 await _apiService.CreateUserAsync(userCreationDto);
                 ErrorMessage = "User created successfully. Please login.";
 
-                // Clear the fields after successful user creation
                 NewUsername = string.Empty;
                 NewPassword = string.Empty;
             }
             catch (Exception ex)
             {
-                // Continue handling the exception
                 ErrorMessage = $"User creation failed: {ex.Message}";
             }
             finally
             {
-                // Notify the UI that the properties have changed
                 this.RaisePropertyChanged(nameof(NewUsername));
                 this.RaisePropertyChanged(nameof(NewPassword));
             }
@@ -121,10 +117,9 @@ namespace TP2_Interface.ViewModels
                     PostgresPassword = loginResponse.PostgresPassword
                 };
 
-                // Pass PostgreSQL credentials and IsAdmin flag to MainWindowViewModel
                 var mainWindow = new MainWindow(loginResponse.PostgresUsername, loginResponse.PostgresPassword, loginResponse.IsAdmin);
                 mainWindow.Show();
-                _loginWindow.Close(); // Close the login window
+                _loginWindow.Close(); 
             }
             catch (HttpRequestException httpEx)
             {
@@ -135,9 +130,5 @@ namespace TP2_Interface.ViewModels
                 ErrorMessage = "Invalid username or password.";
             }
         }
-
-
-
-
     }
 }

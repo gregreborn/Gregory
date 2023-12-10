@@ -3,10 +3,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:TP2_Interface.ViewModels"
-        xmlns:global="clr-namespace:"
         mc:Ignorable="d"
         x:Class="TP2_Interface.Views.AdminKnowledgeWindow"
-        x:DataType="global:AdminKnowledgeViewModel"
+        x:DataType="vm:AdminKnowledgeViewModel"
         Title="Admin Knowledge Management">
 
     <Grid>
@@ -15,7 +14,6 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Left Section: List and buttons -->
         <StackPanel Grid.Column="0" Margin="10">
             <ListBox ItemsSource="{Binding KnowledgeEntries}" SelectedItem="{Binding SelectedEntry}" Height="300">
                 <ListBox.ItemTemplate>
@@ -28,9 +26,7 @@
             <Button Content="Delete" Command="{Binding DeleteEntryCommand}" IsEnabled="{Binding IsEntrySelected}" Margin="5"/>
         </StackPanel>
 
-        <!-- Right Section: Fields and Create button -->
         <StackPanel Grid.Column="1" Margin="10">
-            <!-- Right Section: Fields for new knowledge entry creation -->
             <StackPanel Grid.Column="1" Margin="10">
                 <TextBox Width="200" Margin="5" Watermark="Title" Text="{Binding NewTitle, Mode=TwoWay}"/>
                 <TextBox Width="200" Margin="5" Watermark="Description" Text="{Binding NewDescription, Mode=TwoWay}"/>
@@ -46,7 +42,6 @@
                 <TextBox Width="200" Margin="5" Watermark="Arme Secondaire" Text="{Binding NewArmeSecondaire, Mode=TwoWay}"/>
                 <Button Content="Create" Command="{Binding CreateEntryCommand}" Margin="5"/>
             </StackPanel>
-            <!-- Error Message Display -->
             <TextBlock Text="{Binding ErrorMessage}" Foreground="{Binding MessageColor}" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
 </StackPanel>
     </Grid>

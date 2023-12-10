@@ -21,7 +21,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <TextBlock Text="{Binding StatusMessage}" Foreground="Red" HorizontalAlignment="Center" Margin="10"/>
+        <TextBlock Text="{Binding StatusMessage}" Foreground="{Binding StatusMessageColor}" HorizontalAlignment="Center" Margin="10"/>
                  
         <Button Command="{Binding PromoteUserCommand}"
                 Content="Promote to Admin"

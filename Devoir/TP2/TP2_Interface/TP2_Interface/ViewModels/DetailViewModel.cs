@@ -49,7 +49,7 @@ public class DetailViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                // Handle any JSON parsing errors here
+                
             }
         }
     }

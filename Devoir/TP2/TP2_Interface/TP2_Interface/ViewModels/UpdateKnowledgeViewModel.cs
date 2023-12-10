@@ -10,7 +10,6 @@ using TP2_Interface.Services;
 
 namespace TP2_Interface.ViewModels;
 
-// Define the JsonField class
 public class JsonField
 {
     public string Key { get; set; }
@@ -76,7 +75,7 @@ public class UpdateKnowledgeViewModel : ViewModelBase
             }
             catch (Exception ex)
             {
-                // Handle JSON parsing error
+                
             }
         }
     }
@@ -85,14 +84,12 @@ public class UpdateKnowledgeViewModel : ViewModelBase
     {
         if (!ValidateFields()) return;
 
-        // Compile JSON fields back to JSON string
         var updatedJson = new JObject();
         foreach (var field in _editableJsonFields)
         {
             updatedJson[field.Key] = field.Value;
         }
 
-        // Update the entry with new data
         _entryToUpdate.Title = Title;
         _entryToUpdate.Description = Description;
         _entryToUpdate.JsonFields = updatedJson.ToString();
@@ -110,7 +107,6 @@ public class UpdateKnowledgeViewModel : ViewModelBase
     
     private bool ValidateFields()
     {
-        // Validate Title and Description as strings
         if (string.IsNullOrWhiteSpace(Title))
         {
             ShowErrorMessage("Title cannot be empty.");
@@ -123,7 +119,6 @@ public class UpdateKnowledgeViewModel : ViewModelBase
             return false;
         }
 
-        // Validate each JSON field based on its key
         foreach (var jsonField in _editableJsonFields)
         {
             if (jsonField.Key.Equals("force") || jsonField.Key.Equals("defense") || 
@@ -145,7 +140,6 @@ public class UpdateKnowledgeViewModel : ViewModelBase
             }
             else
             {
-                // For other string fields like genre, origine, etc.
                 if (string.IsNullOrWhiteSpace(jsonField.Value))
                 {
                     ShowErrorMessage($"{jsonField.Key} cannot be empty.");
@@ -162,6 +156,5 @@ public class UpdateKnowledgeViewModel : ViewModelBase
         ErrorMessage = message;
         MessageColor = SolidColorBrush.Parse("Red"); 
     }
-    
     
 }

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using ReactiveUI;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using TP2_API.DTOs;
 using TP2_Interface.Services;
 
@@ -13,10 +14,16 @@ public class AdminViewModel : ViewModelBase
 {
     private string _usernameToPromote;
     private APIService _apiService;
-    private int _selectedUserId; // This should be set based on your UI logic
+    private int _selectedUserId;
     private string _statusMessage;
     private ObservableCollection<UserDto> _users;
     private UserDto _selectedUser;
+    private ISolidColorBrush _statusMessageColor;
+    public ISolidColorBrush StatusMessageColor
+    {
+        get => _statusMessageColor;
+        set => this.RaiseAndSetIfChanged(ref _statusMessageColor, value);
+    }
     public UserDto SelectedUser
     {
         get => _selectedUser;
@@ -50,7 +57,7 @@ public class AdminViewModel : ViewModelBase
 
     public AdminViewModel()
     {
-        _apiService = new APIService(); // Initialize with appropriate parameters if needed
+        _apiService = new APIService(); 
 
         PromoteUserCommand = ReactiveCommand.CreateFromTask(PromoteUser);
         DeleteInactiveUsersCommand = ReactiveCommand.CreateFromTask(DeleteInactiveUsers);
@@ -74,20 +81,27 @@ public class AdminViewModel : ViewModelBase
         try
         {
             bool result = await _apiService.PromoteToAdminAsync(SelectedUser.Username, SessionManager.CurrentUser.Username);
-            StatusMessage = result ? "User promoted successfully." : "Failed to promote user.";
-        }
+            if (result)
+            {
+                StatusMessage = "User promoted successfully.";
+                StatusMessageColor = Brushes.Green; 
+            }
+            else
+            {
+                StatusMessage = "Failed to promote user.";
+                StatusMessageColor = Brushes.Red; 
+            }        }
         catch (Exception ex)
         {
             StatusMessage = "Error: " + ex.Message;
-        }
+            StatusMessageColor = Brushes.Red;        }
 
-        // Reload users to reflect changes
         LoadUsersAsync();
     }
 
     private async Task DeleteInactiveUsers()
     {
-        if (SelectedUser == null)
+        if (SelectedUser == null || _selectedUser.UserId == 0)
         {
             StatusMessage = "Please select a user.";
             return;
@@ -103,7 +117,6 @@ public class AdminViewModel : ViewModelBase
             StatusMessage = "Error: " + ex.Message;
         }
 
-        // Reload users to reflect changes
         LoadUsersAsync();
     }
 

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using TP2_Interface.Models;
 using TP2_Interface.Services;
-using TP2_Interface.ViewModels;
 using TP2_Interface.Views;
 using System.Text.Json;
-using Avalonia.Controls;
 using Avalonia.Media;
+
+namespace TP2_Interface.ViewModels;
 
 public class AdminKnowledgeViewModel : ViewModelBase
 {
@@ -18,8 +18,7 @@ public class AdminKnowledgeViewModel : ViewModelBase
     private KnowledgeEntry _selectedEntry;
     private bool _isEntrySelected;
     private bool _isAdmin;
-    private string _title; // Added for binding window title
-    // Properties for new knowledge entry creation
+    private string _title; 
     private string _newTitle;
     private string _newDescription;
     private string _newForce;
@@ -142,7 +141,6 @@ public class AdminKnowledgeViewModel : ViewModelBase
         UpdateEntryCommand = ReactiveCommand.Create(OpenUpdateWindow);
         DeleteEntryCommand = ReactiveCommand.CreateFromTask(DeleteEntry);
         
-        // Subscribe to property changes
         this.WhenAnyValue(x => x.SelectedEntry)
             .Subscribe(entry => IsEntrySelected = entry != null);
             LoadEntriesAsync(); 
@@ -224,7 +222,7 @@ public class AdminKnowledgeViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
-            // Handle exceptions, e.g., database access issue
+            ShowErrorMessage($"Failed to load entries: {ex.Message}");
         }
     }
 
@@ -237,10 +235,8 @@ public class AdminKnowledgeViewModel : ViewModelBase
             return;
         }
 
-        // Format the connection string
         string connectionString = $"Host=localhost;Username={SessionManager.CurrentUser.PostgresUsername};Password={SessionManager.CurrentUser.PostgresPassword};Database=tp2";
 
-        // Create the ViewModel for the UpdateWindow with necessary parameters
         var updateViewModel = new UpdateKnowledgeViewModel(SelectedEntry, connectionString);
 
         var updateWindow = new UpdateKnowledgeWindow();
@@ -271,23 +267,19 @@ public class AdminKnowledgeViewModel : ViewModelBase
     }
 
     
-    // Validation method
     private bool ValidateFields()
     {
-        // Validate title and description are not empty
         if (string.IsNullOrWhiteSpace(NewTitle) || string.IsNullOrWhiteSpace(NewDescription))
         {
             ShowErrorMessage("Title and description cannot be empty.");
             return false;
         }
 
-        // Validate apparition as a valid year
         if (!int.TryParse(NewApparition, out int apparitionYear) || apparitionYear < 1900 || apparitionYear > DateTime.Now.Year)
         {
             ShowErrorMessage("Apparition must be a valid year.");
             return false;
         }
-        // Validate force is an integer
         if (!int.TryParse(NewForce, out _))
         {
             ShowErrorMessage("Force must be a number.");
@@ -316,15 +308,13 @@ public class AdminKnowledgeViewModel : ViewModelBase
     private void ShowErrorMessage(string message)
     {
         ErrorMessage = message;
-        MessageColor = SolidColorBrush.Parse("Red"); // Set the color to red for error messages
+        MessageColor = SolidColorBrush.Parse("Red");
     }
 
     private void ShowSuccessMessage(string message)
     {
         ErrorMessage = message;
-        MessageColor = SolidColorBrush.Parse("Green"); // Set the color to green for success messages
+        MessageColor = SolidColorBrush.Parse("Green"); 
     }
-
-
-
+    
 }
