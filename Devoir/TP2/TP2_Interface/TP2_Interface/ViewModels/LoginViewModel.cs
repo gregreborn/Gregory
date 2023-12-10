@@ -16,6 +16,8 @@ namespace TP2_Interface.ViewModels
         private string _username;
         private string _password;
         private string _errorMessage;
+        public string NewUsername { get; set; }
+        public string NewPassword { get; set; }
 
         public string Username
         {
@@ -33,6 +35,7 @@ namespace TP2_Interface.ViewModels
             get => _errorMessage;
             set => this.RaiseAndSetIfChanged(ref _errorMessage, value);
         }
+        public ReactiveCommand<Unit, Unit> CreateUserCommand { get; }
 
         public ReactiveCommand<Unit, Unit> LoginCommand { get; }
 
@@ -48,11 +51,49 @@ namespace TP2_Interface.ViewModels
                     !string.IsNullOrWhiteSpace(username) && 
                     !string.IsNullOrWhiteSpace(password)
             );
+            CreateUserCommand = ReactiveCommand.CreateFromTask(CreateUser);
 
             LoginCommand = ReactiveCommand.CreateFromTask(Login, canLogin);
         }
 
         private APIService _apiService = new APIService();
+
+        private async Task CreateUser()
+        {
+            if (string.IsNullOrWhiteSpace(NewUsername) || string.IsNullOrWhiteSpace(NewPassword))
+            {
+                ErrorMessage = "New username and password cannot be empty.";
+                return;
+            }
+
+            var userCreationDto = new UserCreationDto
+            {
+                Username = NewUsername,
+                Password = NewPassword
+            };
+
+            try
+            {
+                await _apiService.CreateUserAsync(userCreationDto);
+                ErrorMessage = "User created successfully. Please login.";
+
+                // Clear the fields after successful user creation
+                NewUsername = string.Empty;
+                NewPassword = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                // Continue handling the exception
+                ErrorMessage = $"User creation failed: {ex.Message}";
+            }
+            finally
+            {
+                // Notify the UI that the properties have changed
+                this.RaisePropertyChanged(nameof(NewUsername));
+                this.RaisePropertyChanged(nameof(NewPassword));
+            }
+        }
+
 
         private async Task Login()
         { 

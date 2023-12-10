@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,18 @@ public class APIService
         var content = new StringContent(JsonConvert.SerializeObject(requesterUsername), Encoding.UTF8, "application/json");
         var response = await _httpClient.PutAsync($"api/users/promote/{username}", content);
         return response.IsSuccessStatusCode;
+    }
+
+    public async Task<List<UserDto>> GetAllUsersAsync()
+    {
+        var response = await _httpClient.GetAsync("api/users/all");
+        if (response.IsSuccessStatusCode)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<UserDto>>(responseContent);
+        }
+
+        return new List<UserDto>(); // or handle errors as needed
     }
 
     public async Task<bool> DeleteUserAsync(int userId, string requesterUsername)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using ReactiveUI;
 using TP2_Interface.Models;
 using TP2_Interface.Services;
@@ -18,10 +19,14 @@ public class MainWindowViewModel : ViewModelBase
     private string _searchQuery;
     private DatabaseService _databaseService;
     private bool _isAdmin;
+    private Window _mainWindow;
+
     public ReactiveCommand<Unit, Unit> ManageKnowledgeCommand { get; }
     public ReactiveCommand<Unit, Unit> ManageUsersCommand { get; }
     public ReactiveCommand<Unit, Unit> SearchCommand { get; }
     public ReactiveCommand<Unit, Unit> AdvancedSearchCommand { get; }
+    public ReactiveCommand<Unit, Unit> LogoutCommand { get; }
+
 
 
     public List<string> SearchableFields { get; } = new List<string>
@@ -66,7 +71,7 @@ public class MainWindowViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedKnowledgeEntry, value);
     }
 
-    public MainWindowViewModel(string postgresUsername, string postgresPassword, bool isAdmin)
+    public MainWindowViewModel(Window mainWindow,string postgresUsername, string postgresPassword, bool isAdmin)
     {
         string connectionString = $"Host=localhost;Username={postgresUsername};Password={postgresPassword};Database=tp2";
         _databaseService = new DatabaseService(connectionString);
@@ -76,8 +81,11 @@ public class MainWindowViewModel : ViewModelBase
         ManageKnowledgeCommand = ReactiveCommand.Create(OpenAdminKnowledgeWindow);
         ManageUsersCommand = ReactiveCommand.Create(OpenAdminWindow);
         AdvancedSearchCommand = ReactiveCommand.CreateFromTask(PerformAdvancedSearch);
+        LogoutCommand = ReactiveCommand.Create(Logout);
+        _mainWindow = mainWindow;
 
         LoadEntriesAsync(); 
+        
     }
 
 
@@ -140,5 +148,25 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
     
-    
+    private void Logout()
+    {
+        // Clear the session data
+        ClearSessionData();
+
+        // Open the login window
+        var loginWindow = new LoginWindow();
+        loginWindow.Show();
+
+        // Hide the main window instead of closing it
+        _mainWindow.Hide();
+    }
+
+    private void ClearSessionData()
+    {
+        // Clear the current user and any other session data
+        SessionManager.CurrentUser = null;
+    }
+
+
+
 }

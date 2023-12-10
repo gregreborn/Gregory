@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Mvc;
      }
     
  
+     
      [HttpPost]
      public async Task<IActionResult> CreateUser([FromBody] UserCreationDto userDto)
      {
@@ -109,7 +110,28 @@ using Microsoft.AspNetCore.Mvc;
  
  
  
- 
+     [HttpGet("all")]
+     public async Task<IActionResult> GetAllUsers()
+     {
+         var users = await _userRepository.GetAllUsers();
+
+         if (users == null || !users.Any())
+         {
+             return NotFound("No users found.");
+         }
+
+         var userDtos = users.Select(u => new UserDto
+         {
+             UserId = (int)u.UserId,
+             Username = u.Username,
+             PostgresUsername = u.PostgresUsername,
+             PostgresPassword = u.PostgresPassword,
+             IsAdmin = u.IsAdmin,
+         });
+
+         return Ok(userDtos);
+     }
+
  
  
      // Endpoint to promote a user to admin

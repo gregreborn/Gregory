@@ -47,7 +47,7 @@
                 <Button Content="Create" Command="{Binding CreateEntryCommand}" Margin="5"/>
             </StackPanel>
             <!-- Error Message Display -->
-            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="{Binding MessageColor}" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
 </StackPanel>
     </Grid>
 </Window>

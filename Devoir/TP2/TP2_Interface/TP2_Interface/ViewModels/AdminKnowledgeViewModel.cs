@@ -9,6 +9,8 @@ using TP2_Interface.ViewModels;
 using TP2_Interface.Views;
 using System.Text.Json;
 using Avalonia.Controls;
+using Avalonia.Media;
+
 public class AdminKnowledgeViewModel : ViewModelBase
 {
     private ObservableCollection<KnowledgeEntry> _knowledgeEntries;
@@ -31,6 +33,12 @@ public class AdminKnowledgeViewModel : ViewModelBase
     private string _newArmePrincipale;
     private string _newArmeSecondaire;
     private string _errorMessage;
+    private SolidColorBrush _messageColor;
+    public SolidColorBrush MessageColor
+    {
+        get => _messageColor;
+        set => this.RaiseAndSetIfChanged(ref _messageColor, value);
+    }
     public string ErrorMessage
     {
         get => _errorMessage;
@@ -144,9 +152,12 @@ public class AdminKnowledgeViewModel : ViewModelBase
     
     private async Task CreateEntry()
     {
-        if (!_isAdmin) return;
+        if (!_isAdmin) 
+        {
+            ShowErrorMessage("You do not have the necessary permissions.");
+            return;
+        }
 
-        // Validate fields before creating the entry
         if (!ValidateFields()) return;
 
         var jsonFields = new
@@ -175,16 +186,17 @@ public class AdminKnowledgeViewModel : ViewModelBase
         try
         {
             await _databaseService.CreateEntryAsync(newEntry);
-            // Clear fields and refresh the list of entries
             ClearEntryFields();
             LoadEntriesAsync();
-            // TODO: Implement your method to show success message
+            ShowSuccessMessage("Knowledge entry created successfully.");
         }
         catch (Exception ex)
         {
-            // TODO: Implement your method to show error message
+            ShowErrorMessage($"Failed to create entry: {ex.Message}");
         }
     }
+
+
 
     private void ClearEntryFields()
     {
@@ -240,25 +252,24 @@ public class AdminKnowledgeViewModel : ViewModelBase
 
     private async Task DeleteEntry()
     {
-        if (SelectedEntry != null && SelectedEntry.Id > 0)
+        if (SelectedEntry == null || SelectedEntry.Id <= 0)
         {
-            try
-            {
-                await _databaseService.DeleteEntryAsync(SelectedEntry.Id);
-                LoadEntriesAsync();
-            // After successful operation
-            }
-            catch (Exception ex)
-            {
-                // Error handling
-            }
+            ShowErrorMessage("No knowledge entry selected.");
+            return;
         }
-        else
-        {
-            ShowErrorMessage("no knowledge selected.");
 
+        try
+        {
+            await _databaseService.DeleteEntryAsync(SelectedEntry.Id);
+            LoadEntriesAsync();
+            ShowSuccessMessage("Knowledge entry deleted successfully.");
+        }
+        catch (Exception ex)
+        {
+            ShowErrorMessage($"Failed to delete entry: {ex.Message}");
         }
     }
+
     
     // Validation method
     private bool ValidateFields()
@@ -301,11 +312,19 @@ public class AdminKnowledgeViewModel : ViewModelBase
         return true;
     }
 
-// Show error message method
+
     private void ShowErrorMessage(string message)
     {
         ErrorMessage = message;
-
+        MessageColor = SolidColorBrush.Parse("Red"); // Set the color to red for error messages
     }
+
+    private void ShowSuccessMessage(string message)
+    {
+        ErrorMessage = message;
+        MessageColor = SolidColorBrush.Parse("Green"); // Set the color to green for success messages
+    }
+
+
 
 }

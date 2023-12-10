@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reactive;
 using System.Threading.Tasks;
+using Avalonia.Media;
 using TP2_Interface.Services;
 
 namespace TP2_Interface.ViewModels;
@@ -21,6 +22,13 @@ public class UpdateKnowledgeViewModel : ViewModelBase
     private DatabaseService _databaseService;
     private List<JsonField> _editableJsonFields;
     private string _errorMessage;
+    private Avalonia.Media.Brush _messageColor;
+    public Avalonia.Media.Brush MessageColor
+    {
+        get => _messageColor;
+        set => this.RaiseAndSetIfChanged(ref _messageColor, value);
+    }
+    
     public string ErrorMessage
     {
         get => _errorMessage;
@@ -28,9 +36,9 @@ public class UpdateKnowledgeViewModel : ViewModelBase
     }
 
 
-    // Properties for title and description
     public string Title { get; set; }
     public string Description { get; set; }
+    public Action CloseWindowAction { get; set; }
 
     public List<JsonField> EditableJsonFields
     {
@@ -92,11 +100,11 @@ public class UpdateKnowledgeViewModel : ViewModelBase
         try
         {
             await _databaseService.UpdateEntryAsync(_entryToUpdate);
-            // Handle successful update
+            CloseWindowAction?.Invoke(); 
         }
         catch (Exception ex)
         {
-            // Handle update error
+            ErrorMessage = $"Update failed: {ex.Message}";
         }
     }
     
@@ -152,6 +160,7 @@ public class UpdateKnowledgeViewModel : ViewModelBase
     private void ShowErrorMessage(string message)
     {
         ErrorMessage = message;
+        MessageColor = SolidColorBrush.Parse("Red"); 
     }
     
     

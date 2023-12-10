@@ -1,8 +1,10 @@
 
 using System;
+using System.Collections.ObjectModel;
 using System.Reactive;
 using ReactiveUI;
 using System.Threading.Tasks;
+using TP2_API.DTOs;
 using TP2_Interface.Services;
 
 namespace TP2_Interface.ViewModels;
@@ -13,7 +15,19 @@ public class AdminViewModel : ViewModelBase
     private APIService _apiService;
     private int _selectedUserId; // This should be set based on your UI logic
     private string _statusMessage;
+    private ObservableCollection<UserDto> _users;
+    private UserDto _selectedUser;
+    public UserDto SelectedUser
+    {
+        get => _selectedUser;
+        set => this.RaiseAndSetIfChanged(ref _selectedUser, value);
+    }
 
+    public ObservableCollection<UserDto> Users
+    {
+        get => _users;
+        set => this.RaiseAndSetIfChanged(ref _users, value);
+    }
     public string StatusMessage
     {
         get => _statusMessage;
@@ -40,39 +54,57 @@ public class AdminViewModel : ViewModelBase
 
         PromoteUserCommand = ReactiveCommand.CreateFromTask(PromoteUser);
         DeleteInactiveUsersCommand = ReactiveCommand.CreateFromTask(DeleteInactiveUsers);
+        LoadUsersAsync();
+
     }
 
+    private async void LoadUsersAsync()
+    {
+        var userList = await _apiService.GetAllUsersAsync();
+        Users = new ObservableCollection<UserDto>(userList);
+    }
     private async Task PromoteUser()
     {
-        if (string.IsNullOrWhiteSpace(UsernameToPromote))
+        if (SelectedUser == null || _selectedUser.UserId == 0)
         {
-            StatusMessage = "Username cannot be empty.";
+            StatusMessage = "Please select a user.";
             return;
         }
-
-        // ... existing logic ...
+       
         try
         {
-            bool result = await _apiService.PromoteToAdminAsync(SessionManager.CurrentUser.Username,_usernameToPromote);
+            bool result = await _apiService.PromoteToAdminAsync(SelectedUser.Username, SessionManager.CurrentUser.Username);
             StatusMessage = result ? "User promoted successfully." : "Failed to promote user.";
         }
         catch (Exception ex)
         {
             StatusMessage = "Error: " + ex.Message;
         }
+
+        // Reload users to reflect changes
+        LoadUsersAsync();
     }
 
     private async Task DeleteInactiveUsers()
     {
+        if (SelectedUser == null)
+        {
+            StatusMessage = "Please select a user.";
+            return;
+        }
+
         try
         {
-            bool result = await _apiService.DeleteUserAsync(SessionManager.CurrentUser.UserId,SessionManager.CurrentUser.Username);
+            bool result = await _apiService.DeleteUserAsync(SelectedUser.UserId, SessionManager.CurrentUser.Username);
             StatusMessage = result ? "Inactive users deleted successfully." : "Failed to delete inactive users.";
         }
         catch (Exception ex)
         {
             StatusMessage = "Error: " + ex.Message;
         }
+
+        // Reload users to reflect changes
+        LoadUsersAsync();
     }
 
 }

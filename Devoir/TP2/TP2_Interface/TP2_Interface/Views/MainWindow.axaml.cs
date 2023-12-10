@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -16,7 +17,7 @@ public partial class MainWindow : Window
 #if DEBUG
         this.AttachDevTools();
 #endif
-        DataContext = new MainWindowViewModel(postgresUsername, postgresPassword, isAdmin);
+        DataContext = new MainWindowViewModel(this,postgresUsername, postgresPassword, isAdmin);
         // Wire up the DoubleTapped event after InitializeComponent
         var listBox = this.FindControl<ListBox>("KnowledgeEntriesListBox");
         listBox.DoubleTapped += ListBox_DoubleTapped;
@@ -37,5 +38,11 @@ public partial class MainWindow : Window
             var detailWindow = new DetailWindow(entry);
             detailWindow.Show();
         }
+    }
+    private void OnClosing(object sender, CancelEventArgs e)
+    {
+        // Cancel the closing and hide the window instead
+        e.Cancel = true;
+        this.Hide();
     }
 }

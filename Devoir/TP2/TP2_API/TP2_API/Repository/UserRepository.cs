@@ -20,6 +20,11 @@ public class UserRepository
     {
         return await _context.Users.FindAsync(userId);
     }
+    
+    public async Task<IEnumerable<Users>> GetAllUsers()
+    {
+        return await _context.Users.ToListAsync();
+    }
 
     public async Task AddUser(Users user)
     {
@@ -29,6 +34,7 @@ public class UserRepository
         await CreatePostgreSQLUser(user.PostgresUsername, user.PostgresPassword);
     }
 
+    
 
     public async Task SaveChangesAsync()
     {

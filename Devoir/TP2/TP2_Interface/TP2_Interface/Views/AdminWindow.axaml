@@ -12,11 +12,16 @@
     </Design.DataContext>
 
     <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock Text="{Binding StatusMessage}" Foreground="Red" HorizontalAlignment="Center" Margin="10"/>
+        <ListBox ItemsSource="{Binding Users}"
+                 SelectedItem="{Binding SelectedUser}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Username}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-        <TextBox Width="300" Margin="10"
-                 Text="{Binding UsernameToPromote}"
-                 Watermark="Enter username to promote"/>
+        <TextBlock Text="{Binding StatusMessage}" Foreground="Red" HorizontalAlignment="Center" Margin="10"/>
                  
         <Button Command="{Binding PromoteUserCommand}"
                 Content="Promote to Admin"
@@ -25,7 +30,5 @@
         <Button Command="{Binding DeleteInactiveUsersCommand}"
                 Content="Delete Inactive Users"
                 Margin="10"/>
-
-        <!-- Additional UI elements for other functionalities -->
     </StackPanel>
 </Window>

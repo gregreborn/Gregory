@@ -46,5 +46,7 @@
             <Button Content="Manage Knowledge" Command="{Binding ManageKnowledgeCommand}" Margin="5,0"/>
             <Button Content="Manage Users" Command="{Binding ManageUsersCommand}" Margin="5,0"/>
         </StackPanel>
+        <Button Content="Logout" Command="{Binding LogoutCommand}" HorizontalAlignment="Right" Margin="10"/>
+
     </Grid>
 </Window>
