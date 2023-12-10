@@ -29,7 +29,7 @@ public class UserRepository
     public async Task AddUser(Users user)
     {
         _context.Users.Add(user);
-        await SaveChangesAsync(); // Save changes here
+        await SaveChangesAsync(); 
 
         await CreatePostgreSQLUser(user.PostgresUsername, user.PostgresPassword);
     }
@@ -66,14 +66,28 @@ public class UserRepository
 
         if (user != null && PasswordHasher.VerifyPassword(password, user.PasswordHash))
         {
-            // User authenticated successfully
+            if (user.UserId.HasValue) // Check if UserId is not null
+            {
+                await UpdateLastLoginDate(user.UserId.Value); // Pass UserId.Value if not null
+            }
             return user;
         }
 
-        // Authentication failed
         return null;
     }
 
+    private async Task UpdateLastLoginDate(int? userId)
+    {
+        if (userId.HasValue) // Check if userId is not null
+        {
+            var user = await _context.Users.FindAsync(userId.Value);
+            if (user != null)
+            {
+                user.LastLoginDate = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+            }
+        }
+    }
     
     
     public async Task<bool> PromoteUserToAdmin(string username, string requesterUsername)
@@ -120,13 +134,11 @@ public class UserRepository
              return DeleteUserResult.UserNotFound;
          }
 
-         // Revoke SELECT privileges
          await RevokeSelectPrivileges(userToDelete.PostgresUsername);
 
          _context.Users.Remove(userToDelete);
          await _context.SaveChangesAsync();
 
-         // Continue with PostgreSQL user deletion
          await DeletePostgreSQLUser(userToDelete.PostgresUsername);
 
          return DeleteUserResult.Success;
