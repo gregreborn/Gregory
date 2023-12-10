@@ -27,4 +27,123 @@ Utilisez les fonctions de remplissage pour peupler les tables nécessaires.
 
 
 
-FICHIER TEST pour les fonctions:https://www.notion.so/TESTED-FUNCTIONS-5edbdd5333364b6e88487c1f357de590?pvs=4
+FICHIER TEST pour les fonctions:
+# TESTED FUNCTIONS ✅
+
+NOTE: a la fin de chaque test, effacer tout les quests et donner changer, update le character utiliser pour le test pour remettre a base→
+
+```sql
+delete from quests;
+delete from character_quests;
+delete from quest_monsters;
+delete from character_equipment;
+
+Update
+characters
+set level=1,experience = 0,hp=10, mp=10,max_hp=10,max_mp=10,dexterity=15,strength=10,money=500
+where id =[id du charactere];
+```
+
+award_and_complete_quest✅
+
+test:
+
+```sql
+
+ 
+
+select * from characters;//see list of characters, choose one ID
+ 
+select * from generate_and_assign_quest(17);--generate a quest for the character
+select * from character_quests;--take assigned quest id
+
+SELECT * FROM award_and_complete_quest(17);  -- using character ID and quest ID
+```
+
+check_and_level_up✅
+
+test:
+
+```sql
+
+select * from characters;// choose a character id
+Update
+characters
+set level=1,experience = 300,hp=10, mp=10,max_hp=10,max_mp=10,dexterity=15,strength=10,money=500
+where id =[character id];// update experience to have enough to level up
+SELECT check_and_level_up(17);-- updated a characters experience to test the level up when called   
+select * FROM characters;--verify if character leveled up
+```
+
+check_and_level_down✅→penalty_for_failure✅
+
+test:
+
+```sql
+select * from characters;--choose a character id
+select * from generate_and_assign_quest(characeter id); --generate a quest
+select * from character_quests;--get quest id
+Update
+characters
+set level=2,experience = 0,hp=5, mp=5,max_hp=5,max_mp=5,dexterity=5,strength=5,money=500
+where id =character id;-- decrease stats enough to guarantee quest lost
+
+select * from complete_quest_with_combat(character id,quest id)--do a quest penalty will be called and it will call the check and level down function
+select * FROM characters;--verify if character leveled down
+```
+
+equip_better_item:✅
+
+test:
+
+```sql
+select * from characters;--choose character id
+select * from equipment;--choose equipment id
+select * from equip_better_item(17,1);--put character id and equipment
+select * from character_equipment;--check if added
+```
+
+combat:✅
+
+test:
+
+```sql
+select * from characters;--choose character id
+select * from monsters;--choose monster id
+SELECT * from combat(17,1);--verify Messages for combat
+```
+
+complete_quest_with_combat:✅
+
+test:
+
+```sql
+select * from characters;--choose a character id
+select * from generate_and_assign_quest(character id);--generate the first quest
+SELECT * FROM complete_quest_with_combat(character id, quest id);--will complete one full quest, check Messages for quest output
+select * from character_quest;--see list of quest, also quest assigned by complete_quest_with_combat
+select * from quests;--list of quests
+select * from character_equipment;--if character won and quest had equipment award
+```
+
+generate_and_assign_quest:✅
+
+test:
+
+```sql
+select * from characters;--choose character id
+select * from generate_and_assign_quest(character id);
+```
+
+**Problèmes à résoudre concernant le projet Rider**:
+
+1. **Sortilèges** :
+    - Le sort ne s'affiche pas lorsqu'il est utilisé, bien qu'il le soit.
+2. **Barre de progression de l'expérience** :
+    - La barre de progression de l'expérience n'est pas encore implémentée.
+3. **Fonctionnalité de sauvegarde** :
+    - La sauvegarde ne fonctionne pas correctement dans son intégralité.
+4. **Combats de monstres** :
+    - Parfois, les combats de monstres peuvent être nuls, ce qui entraîne l'échec de la quête.
+5. **Personnages avec la compétence "Speedster"** :
+    - Ces personnages peuvent perdre beaucoup au début en raison de leur faible force. Cependant, pour équilibrer, leur force augmente de 2 après chaque quête perdue.
