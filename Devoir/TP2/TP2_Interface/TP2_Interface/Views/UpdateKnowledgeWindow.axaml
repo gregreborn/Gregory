@@ -1,0 +1,29 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:viewModels="clr-namespace:TP2_Interface.ViewModels"
+        x:Class="TP2_Interface.Views.UpdateKnowledgeWindow"
+        Title="Update Knowledge Entry"
+        x:DataType="viewModels:UpdateKnowledgeViewModel">
+
+    <StackPanel Margin="10">
+        <TextBox Text="{Binding Title}" Watermark="Title" Margin="0,0,0,10"/>
+        <TextBox Text="{Binding Description}" Watermark="Description" Margin="0,0,0,10"/>
+
+        <!-- Editable JSON Fields -->
+        <ItemsControl ItemsSource="{Binding EditableJsonFields}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Key}" FontWeight="Bold" Width="120"/>
+                        <TextBox Text="{Binding Value, Mode=TwoWay}" Width="200" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
+        <Button Content="Update" Command="{Binding UpdateCommand}" Margin="5"/>
+        <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+
+    </StackPanel>
+</Window>

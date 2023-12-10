@@ -1,0 +1,31 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:TP2_Interface.ViewModels"
+        x:Class="TP2_Interface.Views.AdminWindow"
+        x:DataType="vm:AdminViewModel"
+        Title="Admin Panel"
+        Icon="/Assets/avalonia-logo.ico"
+        Width="400" Height="300">
+
+    <Design.DataContext>
+        <vm:AdminViewModel/>
+    </Design.DataContext>
+
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock Text="{Binding StatusMessage}" Foreground="Red" HorizontalAlignment="Center" Margin="10"/>
+
+        <TextBox Width="300" Margin="10"
+                 Text="{Binding UsernameToPromote}"
+                 Watermark="Enter username to promote"/>
+                 
+        <Button Command="{Binding PromoteUserCommand}"
+                Content="Promote to Admin"
+                Margin="10"/>
+
+        <Button Command="{Binding DeleteInactiveUsersCommand}"
+                Content="Delete Inactive Users"
+                Margin="10"/>
+
+        <!-- Additional UI elements for other functionalities -->
+    </StackPanel>
+</Window>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="TP2_Interface/App.axaml" value="TP2_Interface/TP2_Interface.csproj" />
+        <entry key="TP2_Interface/Views/AdminKnowledgeWindow.axaml" value="TP2_Interface/TP2_Interface.csproj" />
+        <entry key="TP2_Interface/Views/AdminWindow.axaml" value="TP2_Interface/TP2_Interface.csproj" />
+        <entry key="TP2_Interface/Views/DetailWindow.axaml" value="TP2_Interface/TP2_Interface.csproj" />
+        <entry key="TP2_Interface/Views/JsonDisplayControl.axaml" value="TP2_Interface/TP2_Interface.csproj" />
+        <entry key="TP2_Interface/Views/LoginWindow.axaml" value="TP2_Interface/TP2_Interface.csproj" />
+        <entry key="TP2_Interface/Views/MainWindow.axaml" value="TP2_Interface/TP2_Interface.csproj" />
+        <entry key="TP2_Interface/Views/UpdateKnowledgeWindow.axaml" value="TP2_Interface/TP2_Interface.csproj" />
+      </map>
+    </option>
+  </component>
+</project>
