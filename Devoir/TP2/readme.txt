@@ -1,4 +1,6 @@
 SCRIPT bd, nommer le bd "tp2":
+-- SCRIPT FOR PgAdmin: TP2
+
 -- 1. Create the 'admin' schema
 CREATE SCHEMA admin;
 
@@ -13,19 +15,19 @@ CREATE TABLE admin.users (
     postgres_password VARCHAR(255)
 );
 
--- 3. Add functions and procedure to the 'admin' schema
+-- 3. Define functions and procedures in the 'admin' schema
 
--- Function to create a restricted user
+-- Function: Create a restricted user
 CREATE OR REPLACE FUNCTION admin.create_restricted_user(username VARCHAR, password VARCHAR)
 RETURNS void AS $$
 BEGIN
     EXECUTE format('CREATE USER %I WITH PASSWORD %L', username, password);
     EXECUTE format('GRANT SELECT ON ALL TABLES IN SCHEMA public TO %I', username);
-    -- Add additional privileges as required
+    -- Additional privileges can be added here
 END;
 $$ LANGUAGE plpgsql;
 
--- Function to promote user to admin
+-- Function: Promote user to admin
 CREATE OR REPLACE FUNCTION admin.promote_to_admin(username VARCHAR)
 RETURNS void AS $$
 BEGIN
@@ -33,7 +35,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Procedure to delete a restricted user
+-- Procedure: Delete a restricted user
 CREATE OR REPLACE PROCEDURE admin.delete_restricted_user(username VARCHAR)
 LANGUAGE plpgsql AS $$
 BEGIN
@@ -53,35 +55,33 @@ CREATE TABLE public.connaissance (
     champs JSONB
 );
 
----------------------------------------------------------------------------------------------
-remplir tableau procedure:
+-- Insert data into 'connaissance' table
 INSERT INTO public.connaissance (id, titre, description, champs) VALUES
 (15, 'Ember', 'L''archère de la forêt, protectrice des animaux et de la nature.', '{"force": 4, "genre": "Légende", "defense": 4, "origine": "", "vitesse": 8, "dexterite": 7, "apparition": "2015", "specialite": "Arc et Katars", "arme_principale": "Arc", "arme_secondaire": "Katars"}'),
 (18, 'Xull', 'ogre of despair', '{"force": "9", "genre": "Warrior", "defense": "6", "origine": "Ogre galaxy", "vitesse": "5", "dexterite": "5", "apparition": "2018", "specialite": "canon and axe", "arme_principale": "canon", "arme_secondaire": "axe"}'),
 (12, 'Asuri', 'Un personnage agile et rapide, expert en arts martiaux.', '{"force": 5, "genre": "Légende", "defense": 4, "origine": "La jungle inexplorée", "vitesse": 7, "dexterite": 8, "apparition": "2015", "specialite": "Katar et épée", "arme_principale": "Griffes", "arme_secondaire": "Épée"}'),
 (13, 'Orion', 'Un combattant mystérieux dont l''origine est inconnue.', '{"force": 6, "genre": "Légende", "defense": 8, "origine": "Inconnue", "vitesse": 6, "dexterite": 4, "apparition": "2014", "specialite": "Lance et fusil", "arme_principale": "Lance", "arme_secondaire": "Fusil à plasma"}'),
 (14, 'Bodvar', 'Un guerrier viking cherchant à prouver sa valeur dans le Valhalla.', '{"force": "8", "genre": "Légende", "defense": "5", "origine": "Viking", "vitesse": "5", "dexterite": "6", "apparition": "2014", "specialite": "Marteau et épée", "arme_principale": "Marteau", "arme_secondaire": "Épée"}');
-------------------------------------------------------------------------------------------------------
-les utilisateurs:
--- 1. Create an admin user in PostgreSQL
-CREATE USER admin_user WITH PASSWORD '1234';
+-- User Management in separate transactions using DO command
 
--- 2. Add the admin user to the admin.users table
-INSERT INTO admin.users (username, password_hash, is_admin, postgres_username, postgres_password)
-VALUES ('admin_user', 'hash_of_admin_password', TRUE, 'admin_user', '1234');
+-- Create an admin user
+DO $$ BEGIN
+    CREATE USER admin_users3 WITH PASSWORD '1234';
+    INSERT INTO admin.users (username, password_hash, is_admin, postgres_username, postgres_password)
+    VALUES ('admin_users3', 'hash_of_admin_password', TRUE, 'admin_users3', '1234');
+    ALTER USER admin_users3 WITH SUPERUSER;
+END $$;
 
--- 3. Promote the user to a superuser
-ALTER USER admin_user WITH SUPERUSER;
+-- Create a restricted user
+DO $$ BEGIN
+    CREATE USER restricted_users3 WITH PASSWORD '1234';
+    INSERT INTO admin.users (username, password_hash, is_admin, postgres_username, postgres_password)
+    VALUES ('restricted_users3', 'hash_of_restricted_password', FALSE, 'restricted_users3', '1234');
+    GRANT SELECT ON ALL TABLES IN SCHEMA public TO restricted_users3;
+END $$;
 
--- 4. Create a restricted user in PostgreSQL
-CREATE USER restricted_user WITH PASSWORD '1234';
+-- End of script
 
--- 5. Add the restricted user to the admin.users table
-INSERT INTO admin.users (username, password_hash, is_admin, postgres_username, postgres_password)
-VALUES ('restricted_user', 'hash_of_restricted_password', FALSE, 'restricted_user', '1234');
-
--- 6. Grant restricted privileges to the restricted user
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO restricted_user;
 -----------------------------------------------------------------------------------------------------------------
 tp2_API:localhost port 5051, user:postgres, password:1234
 
