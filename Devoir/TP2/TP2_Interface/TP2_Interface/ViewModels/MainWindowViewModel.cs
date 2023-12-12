@@ -74,7 +74,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(Window mainWindow,string postgresUsername, string postgresPassword, bool isAdmin)
     {
-        string connectionString = $"Host=localhost;Username={postgresUsername};Password={postgresPassword};Database=tp3";
+        string connectionString = $"Host=localhost;Username={postgresUsername};Password={postgresPassword};Database=tp2";
         _databaseService = new DatabaseService(connectionString);
         _isAdmin = isAdmin;
         _knowledgeEntries = new ObservableCollection<KnowledgeEntry>();
