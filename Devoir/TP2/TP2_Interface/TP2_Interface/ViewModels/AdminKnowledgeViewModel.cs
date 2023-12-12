@@ -133,7 +133,7 @@ public class AdminKnowledgeViewModel : ViewModelBase
     public AdminKnowledgeViewModel(string postgresUsername, string postgresPassword, bool isAdmin)
     {
         _isAdmin = isAdmin;
-        string connectionString = $"Host=localhost;Username={postgresUsername};Password={postgresPassword};Database=tp2";
+        string connectionString = $"Host=localhost;Username={postgresUsername};Password={postgresPassword};Database=tp3";
         _databaseService = new DatabaseService(connectionString);
         SelectedEntry = new KnowledgeEntry();
 
@@ -235,7 +235,7 @@ public class AdminKnowledgeViewModel : ViewModelBase
             return;
         }
 
-        string connectionString = $"Host=localhost;Username={SessionManager.CurrentUser.PostgresUsername};Password={SessionManager.CurrentUser.PostgresPassword};Database=tp2";
+        string connectionString = $"Host=localhost;Username={SessionManager.CurrentUser.PostgresUsername};Password={SessionManager.CurrentUser.PostgresPassword};Database=tp3";
 
         var updateViewModel = new UpdateKnowledgeViewModel(SelectedEntry, connectionString);
 

@@ -1,29 +1,18 @@
-using System;
-using System.Security.Cryptography;
-using System.Text;
+using BCrypt.Net;
 
 namespace TP2_API.Utils;
 
-public class PasswordHasher
+public static class PasswordHasher
 {
-    // Global salt (keep it secret)
-    private const string GlobalSalt = "YourSecretGlobalSaltHere";
-
-    // Hash the password using the global salt
+    // Hash the password using bcrypt
     public static string HashPassword(string password)
     {
-        using (var sha256 = SHA256.Create())
-        {
-            var saltedPassword = Encoding.UTF8.GetBytes(GlobalSalt + password);
-            var hashedPasswordBytes = sha256.ComputeHash(saltedPassword);
-            return Convert.ToBase64String(hashedPasswordBytes);
-        }
+        return BCrypt.Net.BCrypt.HashPassword(password);
     }
 
-    // Verify a password by comparing it with the stored hash
+    // Verify a password by comparing it with the stored hash using bcrypt
     public static bool VerifyPassword(string password, string storedHash)
     {
-        var hashedPassword = HashPassword(password);
-        return string.Equals(hashedPassword, storedHash);
+        return BCrypt.Net.BCrypt.Verify(password, storedHash);
     }
 }

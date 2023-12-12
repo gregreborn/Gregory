@@ -46,11 +46,8 @@ public class UserRepository
         return _context.Users.Any(e => e.UserId == id);
     }
     
-    public async Task CreatePostgreSQLUser(string username, string encryptedPassword)
+    public async Task CreatePostgreSQLUser(string username, string password)
     {
-        // Decrypt the password
-        var password = EncryptionHelper.DecryptString(encryptedPassword);
-
         // Now, use the decrypted password to create the PostgreSQL user
         var usernameParam = new NpgsqlParameter("username", username);
         var passwordParam = new NpgsqlParameter("password", password);
@@ -60,21 +57,22 @@ public class UserRepository
     
     
     public async Task<Users?> AuthenticateUser(string username, string password)
+{
+    var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+
+    if (user != null && PasswordHasher.VerifyPassword(password, user.PasswordHash))
     {
-        var user = await _context.Users
-            .SingleOrDefaultAsync(u => u.Username == username);
-
-        if (user != null && PasswordHasher.VerifyPassword(password, user.PasswordHash))
+        // Update last login date
+        if (user.UserId.HasValue) // Check if UserId is not null
         {
-            if (user.UserId.HasValue) // Check if UserId is not null
-            {
-                await UpdateLastLoginDate(user.UserId.Value); // Pass UserId.Value if not null
-            }
-            return user;
-        }
-
-        return null;
+            await UpdateLastLoginDate(user.UserId.Value); // Pass UserId.Value if not null
+        }        await _context.SaveChangesAsync();
+        return user;
     }
+
+    return null;
+}
+
 
     private async Task UpdateLastLoginDate(int? userId)
     {

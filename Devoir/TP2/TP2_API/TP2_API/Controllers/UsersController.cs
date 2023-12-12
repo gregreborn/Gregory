@@ -35,78 +35,68 @@ using Microsoft.AspNetCore.Mvc;
          {
              return BadRequest(ModelState);
          }
- 
+
          try
          {
-             // Before using userDto.Username and userDto.Password, check for nulls
              if (userDto.Username == null || userDto.Password == null)
              {
                  return BadRequest("Username and password are required.");
              }
-             // Hash the user's password for your application
+
              var hashedPassword = PasswordHasher.HashPassword(userDto.Password);
-         
-             // Generate a secure password for PostgreSQL user
-             var postgresPassword = PasswordGenerator.GenerateSecurePassword();
- 
-             // Encrypt the PostgreSQL password
-             var encryptedPassword = EncryptionHelper.EncryptString(postgresPassword);
- 
+
              // Create a new user object
              var user = new Users
              {
                  Username = userDto.Username,
                  PasswordHash = hashedPassword,
                  PostgresUsername = userDto.Username, 
-                 PostgresPassword = encryptedPassword
+                 PostgresPassword = hashedPassword
              };
- 
-             // Use UserRepository to add the user
+
              await _userRepository.AddUser(user);
-             
-             // Prepare the response
+
              var createdUserDto = new UserDto
              {
                  UserId = (int)user.UserId,
                  Username = user.Username
              };
- 
+
              return CreatedAtAction(nameof(GetUserById), new { id = user.UserId }, createdUserDto);
          }
          catch (Exception ex)
          {
-             // Handle any exceptions
              return StatusCode(500, $"An error occurred: {ex.Message}");
          }
      }
+
  
      
      [HttpPost("login")]
      public async Task<IActionResult> Login(LoginDto loginDto)
      {
          var user = await _userRepository.AuthenticateUser(loginDto.Username, loginDto.Password);
- 
+
          if (user == null)
          {
              return Unauthorized("Invalid username or password.");
          }
- 
-         // Decrypt the PostgreSQL password
-         var postgresPassword = EncryptionHelper.DecryptString(user.PostgresPassword);
- 
-         // Prepare the response with PostgreSQL credentials
+
+
+
          var loginResponse = new
          {
              Message = "Login successful",
              UserId = user.UserId,
              Username = user.Username,
-             isAdmin = user.IsAdmin,
+             IsAdmin = user.IsAdmin,
              PostgresUsername = user.PostgresUsername,
-             PostgresPassword = postgresPassword
+             PostgresPassword = user.PostgresPassword
          };
- 
+
          return Ok(loginResponse);
      }
+
  
  
  

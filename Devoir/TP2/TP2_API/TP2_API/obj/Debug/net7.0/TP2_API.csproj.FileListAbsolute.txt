@@ -235,3 +235,4 @@ C:\Users\Gregreborn\RiderProjects\TP2_API\TP2_API\obj\Debug\net7.0\refint\TP2_AP
 C:\Users\Gregreborn\RiderProjects\TP2_API\TP2_API\obj\Debug\net7.0\TP2_API.pdb
 C:\Users\Gregreborn\RiderProjects\TP2_API\TP2_API\obj\Debug\net7.0\TP2_API.genruntimeconfig.cache
 C:\Users\Gregreborn\RiderProjects\TP2_API\TP2_API\obj\Debug\net7.0\ref\TP2_API.dll
+C:\Users\Gregreborn\RiderProjects\TP2_API\TP2_API\bin\Debug\net7.0\BCrypt.Net-Next.dll

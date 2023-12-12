@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "hGIaW8nbFEnULn6kwVGAwBtUwn4uQUD3Y0aMG+sdhB9MJEAo0U0PwRRwRBc9+qZAjzF0yWZGsRPOD3hrCeQd1w==",
+  "dgSpecHash": "218BGrJLs8rjrq3XgLeveYVlGxjHZap7gbVCIuT9pjsYV5HQgHfnxvT2q02KQRLcnz7rrZC+p/vzLt/irp+4Nw==",
   "success": true,
   "projectFilePath": "C:\\Users\\Gregreborn\\RiderProjects\\TP2_API\\TP2_API\\TP2_API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Gregreborn\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Gregreborn\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\Gregreborn\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Gregreborn\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",
