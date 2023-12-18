@@ -154,7 +154,7 @@ public class UserRepository
      
      public async Task RevokeSelectPrivileges(string username)
      {
-         var safeUsername = username.Replace("'", "''"); // Basic SQL Injection protection
+         var safeUsername = username.Replace("'", "''"); 
          var sql = $"REVOKE SELECT ON ALL TABLES IN SCHEMA public FROM \"{safeUsername}\"";
          await _context.Database.ExecuteSqlRawAsync(sql);
      }

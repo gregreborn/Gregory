@@ -11,12 +11,10 @@ public partial class AdminKnowledgeWindow : Window
     {
         InitializeComponent();
     }
-    // In your Avalonia window code-behind (not in ViewModel)
     public async Task ShowDialog(string text)
     {
         var dialog = new Window
         {
-            // Dialog setup
         };
 
         await dialog.ShowDialog(this);

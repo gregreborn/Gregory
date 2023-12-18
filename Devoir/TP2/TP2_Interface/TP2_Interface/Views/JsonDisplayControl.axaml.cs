@@ -38,8 +38,6 @@ namespace TP2_Interface.Views
 
         private string PrettyPrintJson(string json)
         {
-            // Here you can implement the logic to format the JSON string.
-            // For now, it's just returning the raw string.
             return json;
         }
     }

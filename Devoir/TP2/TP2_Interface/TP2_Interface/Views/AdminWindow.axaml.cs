@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using TP2_Interface.ViewModels; // Assuming this is the namespace for your view models
+using TP2_Interface.ViewModels; 
 
 namespace TP2_Interface.Views;
 

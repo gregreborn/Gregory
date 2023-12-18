@@ -18,7 +18,6 @@ public partial class MainWindow : Window
         this.AttachDevTools();
 #endif
         DataContext = new MainWindowViewModel(this,postgresUsername, postgresPassword, isAdmin);
-        // Wire up the DoubleTapped event after InitializeComponent
         var listBox = this.FindControl<ListBox>("KnowledgeEntriesListBox");
         listBox.DoubleTapped += ListBox_DoubleTapped;
     }

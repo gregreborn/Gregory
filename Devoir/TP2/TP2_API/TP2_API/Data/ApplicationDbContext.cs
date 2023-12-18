@@ -14,12 +14,12 @@ namespace TP2_API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Use the "admin" schema for the Users, UserRole, and UserRoleMapping tables
+            // Use the "admin" schema for the Users table
             modelBuilder.HasDefaultSchema("admin");
 
             modelBuilder.Entity<Users>(entity =>
             {
-                entity.ToTable("users", "admin"); // Specify the schema name if it's not the default one
+                entity.ToTable("users", "admin"); 
                 entity.HasKey(u => u.UserId);
                 entity.Property(e => e.LastLoginDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
             });

@@ -178,7 +178,6 @@ public async Task<IActionResult> DeleteUser(int userId, [FromBody] string reques
          {
              UserId = (int)user.UserId,
              Username = user.Username,
-             // Map other fields as necessary
          };
  
          return userDto; // Return the UserDto
