@@ -235,7 +235,7 @@ public class AdminKnowledgeViewModel : ViewModelBase
             return;
         }
 
-        string connectionString = $"Host=localhost;Username={SessionManager.CurrentUser.PostgresUsername};Password={SessionManager.CurrentUser.PostgresPassword};Database=tp2";
+        string connectionString = $"Host=localhost;Username={SessionManager.CurrentUser.PostgresUsername};Password={SessionManager.CurrentUser.PostgresPassword};Database=tp3";
 
         var updateViewModel = new UpdateKnowledgeViewModel(SelectedEntry, connectionString);
 

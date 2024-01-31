@@ -13,30 +13,30 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = TP2_Interface
-build_property.ProjectDir = C:\Users\Gregreborn\RiderProjects\TP2_Interface\TP2_Interface\
+build_property.ProjectDir = C:\Users\Gregreborn\Documents\GitHub\Gregory\Devoir\TP2\TP2_Interface\TP2_Interface\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 
-[C:/Users/Gregreborn/RiderProjects/TP2_Interface/TP2_Interface/App.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP2/TP2_Interface/TP2_Interface/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/TP2_Interface/TP2_Interface/Views/AdminKnowledgeWindow.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP2/TP2_Interface/TP2_Interface/Views/AdminKnowledgeWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/TP2_Interface/TP2_Interface/Views/AdminWindow.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP2/TP2_Interface/TP2_Interface/Views/AdminWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/TP2_Interface/TP2_Interface/Views/DetailWindow.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP2/TP2_Interface/TP2_Interface/Views/DetailWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/TP2_Interface/TP2_Interface/Views/JsonDisplayControl.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP2/TP2_Interface/TP2_Interface/Views/JsonDisplayControl.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/TP2_Interface/TP2_Interface/Views/LoginWindow.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP2/TP2_Interface/TP2_Interface/Views/LoginWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/TP2_Interface/TP2_Interface/Views/MainWindow.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP2/TP2_Interface/TP2_Interface/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
-[C:/Users/Gregreborn/RiderProjects/TP2_Interface/TP2_Interface/Views/UpdateKnowledgeWindow.axaml]
+[C:/Users/Gregreborn/Documents/GitHub/Gregory/Devoir/TP2/TP2_Interface/TP2_Interface/Views/UpdateKnowledgeWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RqgYjlFrh7f0LUQ2XsEaJT5lp/NA3Vtpaz53hTcIwHFoLFT0iawFZavm9quSbBIv59GvuqUbTT31Q25nlfFjVw==",
+  "dgSpecHash": "JqiFhhPDwENFOs8EPygEULwOH95wVtFgMiTakrkKymxGTo2lNQjhVooIc9IUewkvA+Jo4Swl06ZrL/MYjzzQBw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Gregreborn\\RiderProjects\\TP2_Interface\\TP2_Interface\\TP2_Interface.csproj",
+  "projectFilePath": "C:\\Users\\Gregreborn\\Documents\\GitHub\\Gregory\\Devoir\\TP2\\TP2_Interface\\TP2_Interface\\TP2_Interface.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Gregreborn\\.nuget\\packages\\avalonia\\11.0.2\\avalonia.11.0.2.nupkg.sha512",
     "C:\\Users\\Gregreborn\\.nuget\\packages\\avalonia.angle.windows.natives\\2.1.0.2023020321\\avalonia.angle.windows.natives.2.1.0.2023020321.nupkg.sha512",

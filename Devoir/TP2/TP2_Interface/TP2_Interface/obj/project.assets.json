@@ -4923,11 +4923,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Gregreborn\\RiderProjects\\TP2_Interface\\TP2_Interface\\TP2_Interface.csproj",
+      "projectUniqueName": "C:\\Users\\Gregreborn\\Documents\\GitHub\\Gregory\\Devoir\\TP2\\TP2_Interface\\TP2_Interface\\TP2_Interface.csproj",
       "projectName": "TP2_Interface",
-      "projectPath": "C:\\Users\\Gregreborn\\RiderProjects\\TP2_Interface\\TP2_Interface\\TP2_Interface.csproj",
+      "projectPath": "C:\\Users\\Gregreborn\\Documents\\GitHub\\Gregory\\Devoir\\TP2\\TP2_Interface\\TP2_Interface\\TP2_Interface.csproj",
       "packagesPath": "C:\\Users\\Gregreborn\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Gregreborn\\RiderProjects\\TP2_Interface\\TP2_Interface\\obj\\",
+      "outputPath": "C:\\Users\\Gregreborn\\Documents\\GitHub\\Gregory\\Devoir\\TP2\\TP2_Interface\\TP2_Interface\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
